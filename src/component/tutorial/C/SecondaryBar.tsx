@@ -5,11 +5,12 @@ import Tab from '@mui/material/Tab';
 import { TabContext, TabPanel } from '@mui/lab';
 import CIntro from './CIntro';
 
-const MyTabsComponent: React.FC = () => {
+const SecondaryBar: React.FC = () => {
   const [value, setValue] = useState<string>('1');
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
+    event.preventDefault();
   };
 
   return (
@@ -36,4 +37,4 @@ const MyTabsComponent: React.FC = () => {
   );
 };
 
-export default MyTabsComponent;
+export default SecondaryBar;

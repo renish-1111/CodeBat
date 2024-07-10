@@ -1,4 +1,3 @@
-import React from 'react'
 import Navbar from '../core/Navbar'
 import Taber from './C/SecondaryBar'
 

@@ -1,4 +1,3 @@
-import React from 'react'
 import Navbar from './core/Navbar'
 import Cards from './core/Cards'
 
@@ -14,7 +13,7 @@ const Tutorial = () => {
         <div>
             <Navbar />
 
-            <div className='container '>
+            <div className='container mt-20'>
 
                 <div className="flex flex-row flex-wrap gap-4 justify-evenly">
 
