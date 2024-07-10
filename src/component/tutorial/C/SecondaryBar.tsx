@@ -13,7 +13,7 @@ const MyTabsComponent: React.FC = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: { xs: 1080, sm: 10 }, bgcolor: 'background.paper' }}>
+    <Box sx={{ maxWidth: { xs: 1080, sm: 2800}, bgcolor: 'background.paper' }}>
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs

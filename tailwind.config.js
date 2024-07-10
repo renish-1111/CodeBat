@@ -6,7 +6,9 @@ export default {
   ],
   theme: {
     extend: {
-      
+      backgroundImage: {
+        'main-bg': "url('./assets/bg.jpg')",
+      }
     },
   },
   plugins: [],
