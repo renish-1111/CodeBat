@@ -12,7 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
 
 const pages = ['Tutorial', 'About', 'Blog', 'News' , 'Feedback'];
-const link = ['/tutorial', '/about', '/blog', '/news' , '/feedback'];
+const link = ['/tutorial', '/about', '/blog', '/news' , 'mailto:ponkiyarenish@gmail.com'];
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
