@@ -7,6 +7,7 @@ import Tutorial from './component/Tutorial';
 import C from './component/tutorial/C/C';
 import Java from './component/tutorial/Java';
 import About from './component/About';
+import Blog from './component/Blog';
 
 
 function App() {
@@ -16,10 +17,15 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />}></Route>
+          {/* about */}
           <Route path="/about" element={<About />}></Route>
-            <Route path="/tutorial" element={< Tutorial/>}></Route>
-            <Route path="/tutorial/c" element={< C/>}></Route>
-            <Route path="/tutorial/java" element={< Java/>}></Route>
+          {/* blog */}
+          <Route path="/blog" element={<Blog />}></Route>
+          {/* tutorial */}
+          <Route path="/tutorial" element={< Tutorial />}></Route>
+          <Route path="/tutorial/c" element={< C />}></Route>
+          <Route path="/tutorial/java" element={< Java />}></Route>
+
         </Routes>
       </BrowserRouter>
     </>
