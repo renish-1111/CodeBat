@@ -5,10 +5,10 @@ import Navbar from "./core/Navbar";
 const Blog = () => {
     const blogPosts = [
         {
-            title: "Building a React App with Tailwind CSS",
-            description: "Learn how to create a stunning React application using Tailwind CSS for styling.",
-            imageUrl: "./src/assets/image.png",
-            link: "/blog/react-tailwind",
+            title: "Getting Started with Node.js",
+            description: "An introductory guide to Node.js for building server-side applications.",
+            imageUrl: "./src/assets/nodejs.jpg",
+            link: "/blog/nodejs",
             count: 0,
         },
         {
