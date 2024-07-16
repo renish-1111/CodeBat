@@ -1,30 +1,26 @@
 import Navbar from './core/Navbar'
 import Cards from './core/Cards'
 
-
-const title = ['C programing', 'Java'];
-const img = ['./src/assets/c.jpeg', './src/assets/as.java.png'];
-const desc = ['best lag', 'good'];
-const link = ['/tutorial/c', '/tutorial/java'];
+// Combine data into a single array of objects
+const tutorials = [
+  { title: 'C programing', img: 'assets/c.jpeg', desc: 'best lag', link: '/tutorial/c' },
+  { title: 'Java', img: 'assets/as.java.png', desc: 'good', link: '/tutorial/java' },
+];
 
 const Tutorial = () => {
+  return (
+    <div>
+      <Navbar />
 
-    return (
-        <div>
-            <Navbar />
-
-            <div className='container mt-20'>
-
-                <div className="flex flex-row flex-wrap gap-4 justify-evenly">
-
-                    {title.map((title, index) => (
-                
-                    <Cards title={title} img={img[index]} desc={desc[index]} link={link[index]} />
-              ))}
-                </div>
-            </div>
+      <div className='container mt-20'>
+        <div className="flex flex-row flex-wrap gap-4 justify-evenly">
+          {tutorials.map((tutorial, index) => (
+            <Cards key={index} {...tutorial} /> // Spread the object properties
+          ))}
         </div>
-    )
+      </div>
+    </div>
+  )
 }
 
 export default Tutorial

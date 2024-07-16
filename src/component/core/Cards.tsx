@@ -25,6 +25,7 @@ const Cards: React.FC<CardsProps> = ({ title, img, desc, link }) => {
             width="140"
             image={img}
             alt="error"
+            className='rounded-lg p-2'
           />
           <CardContent>
             <Typography gutterBottom variant="h6" component="div">

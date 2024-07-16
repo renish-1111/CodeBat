@@ -18,7 +18,7 @@ const NodeJs = () => {
         <div className="gap-3 grid w-full lg:flex-row lg:w-2/3">
           {/* Cover Image */}
           <img
-            src="../src/assets/nodejs.jpg"
+            src="/assets/nodejs.jpg"
             className="mx-auto rounded-lg w-11/12"
             alt=""
           />
