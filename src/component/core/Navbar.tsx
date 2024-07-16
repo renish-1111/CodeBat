@@ -11,8 +11,8 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
 
-const pages = ['Tutorial', 'About', 'Blog', 'News', 'Feedback'];
-const link = ['/tutorial', '/about', '/blog', '/news', 'mailto:ponkiyarenish@gmail.com'];
+const pages = ['Tutorial', 'About', 'Blog', 'Feedback'];
+const link = ['/tutorial', '/about', '/blog', 'mailto:ponkiyarenish@gmail.com'];
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);

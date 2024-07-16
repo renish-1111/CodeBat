@@ -1,4 +1,4 @@
-import Navbar from '../core/Navbar'
+import Navbar from '../component/core/Navbar'
 import Taber from './C/SecondaryBar'
 
 
