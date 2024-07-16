@@ -33,7 +33,7 @@ function Navbar() {
       <AppBar position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <img className='h-1' src="./assets/code.png" alt="" />
+            <img className='h-1' src="" alt="" />
             <Link to={'/'}>
               <Typography
                 variant="h6"
