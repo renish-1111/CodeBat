@@ -1,8 +1,10 @@
 import { Suspense, lazy } from 'react';
 import './App.css';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Loading from './component/core/Loading';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Navbar from './component/core/Navbar';
+import CircularProgress from '@mui/material/CircularProgress';
 
+// Lazy loading components
 const Home = lazy(() => import('./component/Home'));
 const Tutorial = lazy(() => import('./component/Tutorial'));
 const C = lazy(() => import('./tutorial/C/C'));
@@ -14,7 +16,10 @@ const NodeJs = lazy(() => import('./Blog/NodeJs'));
 function App() {
   return (
     <BrowserRouter>
-      <Suspense fallback={<Loading/>}>
+      <Navbar />
+      <Suspense fallback={<div className='h-screen w-full flex justify-center items-center'>
+        <CircularProgress style={{ color: 'primary' }} size={100} className='' />
+      </div>}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
