@@ -1,38 +1,32 @@
-import './App.css'
+import { Suspense, lazy } from 'react';
+import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Loading from './component/core/Loading';
 
-
-import Home from './component/Home';
-import Tutorial from './component/Tutorial';
-import C from './tutorial/C/C';
-import Java from './tutorial/Java';
-import About from './component/About';
-import Blog from './component/Blog';
-import NodeJs from './Blog/NodeJs';
-
+const Home = lazy(() => import('./component/Home'));
+const Tutorial = lazy(() => import('./component/Tutorial'));
+const C = lazy(() => import('./tutorial/C/C'));
+const Java = lazy(() => import('./tutorial/Java'));
+const About = lazy(() => import('./component/About'));
+const Blog = lazy(() => import('./component/Blog'));
+const NodeJs = lazy(() => import('./Blog/NodeJs'));
 
 function App() {
-
   return (
-    <>
-      <BrowserRouter>
-
+    <BrowserRouter>
+      <Suspense fallback={<Loading/>}>
         <Routes>
-          <Route path="/" element={<Home />}></Route>
-          {/* about */}
-          <Route path="/about" element={<About />}></Route>
-          {/* blog */}
-          <Route path="/blog" element={<Blog />}></Route>
-          <Route path="/blog/nodejs" element={<NodeJs />}></Route>
-          {/* tutorial */}
-          <Route path="/tutorial" element={< Tutorial />}></Route>
-          <Route path="/tutorial/c" element={< C />}></Route>
-          <Route path="/tutorial/java" element={< Java />}></Route>
-
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/nodejs" element={<NodeJs />} />
+          <Route path="/tutorial" element={<Tutorial />} />
+          <Route path="/tutorial/c" element={<C />} />
+          <Route path="/tutorial/java" element={<Java />} />
         </Routes>
-      </BrowserRouter>
-    </>
-  )
+      </Suspense>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
