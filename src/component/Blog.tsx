@@ -2,8 +2,6 @@ import { Link } from "react-router-dom";
 import Navbar from "./core/Navbar";
 import recentBlog from "../../config/recentBlog";
 import blogDetail from "../../config/blogDetail";
-import { Skeleton } from '@mui/material';
-import { useState, useEffect } from 'react';
 import BlogCards from './core/BlogCards';
 
 interface BlogPost {
@@ -12,15 +10,6 @@ interface BlogPost {
 }
 
 const Blog = () => {
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        // Simulate a data fetch
-        setTimeout(() => {
-            setLoading(false);
-        }, 500);
-    }, []);
-
     return (
         <div>
             <Navbar />
@@ -28,15 +17,7 @@ const Blog = () => {
                 <div className="mx-5 lg:mx-auto mt-5 lg:w-8/12">
                     <div className="grid md:grid-cols-2 gap-5 ">
                         {blogDetail.map((blog, index) => (
-                            loading ? (
-                                <div key={index} className="w-full">
-                                    <Skeleton variant="rectangular" width="100%" height={300} className="rounded-lg mb-2" animation="wave" />
-                                    <Skeleton variant="text" width="100%" className="mb-2" animation="wave" />
-                                    <Skeleton variant="text" width="100%" className="mb-2" animation="wave" />
-                                </div>
-                            ) : (
-                                <BlogCards key={index} {...blog} />
-                            )
+                            <BlogCards key={index} {...blog} />
                         ))}
                     </div>
                 </div>
@@ -44,19 +25,11 @@ const Blog = () => {
                 <div className="bg-[#1876d3] mt-3 text-[#fefffe] h-96 rounded-3xl flex-col w-4/12 md:w-3/12 mr-2 hidden lg:flex p-2">
                     <h3 className="text-center text-3xl">Recent Post</h3>
                     <ul className="flex flex-col m-3 gap-2 mt-5 text-lg">
-                        {loading ? (
-                            <>
-                                <Skeleton variant="text" width="100%" className="mb-2" />
-                                <Skeleton variant="text" width="100%" className="mb-2" />
-                                <Skeleton variant="text" width="100%" className="mb-2" />
-                            </>
-                        ) : (
-                            recentBlog.map((blog: BlogPost, index) => (
-                                <li key={index}>
-                                    <Link to={blog.link}>{blog.title}</Link>
-                                </li>
-                            ))
-                        )}
+                        {recentBlog.map((blog: BlogPost, index) => (
+                            <li key={index}>
+                                <Link to={blog.link}>{blog.title}</Link>
+                            </li>
+                        ))}
                     </ul>
                 </div>
             </div>
