@@ -1,18 +1,31 @@
+import React, { useState, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import { Link } from 'react-router-dom';
+import BlogCardsSkeleton from './BlogCardsSkeleton.tsx'; // Assuming BlogCardsSkeleton is in the same directory
 
 interface BlogCardsProps {
-    title: string;
-    img: string;
-    description: string;
-    link: string;
+  title: string;
+  img: string;
+  description: string;
+  link: string;
+}
+
+const BlogCards: React.FC<BlogCardsProps> = ({ title, img, description, link }) => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2000); // Simulate loading time
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <BlogCardsSkeleton />;
   }
 
-const BlogCards : React.FC<BlogCardsProps> = ({ title, img, description, link }) => {
   return (
     <Link to={link}>
       <Card sx={{ maxWidth: 450 }}>
@@ -42,8 +55,7 @@ const BlogCards : React.FC<BlogCardsProps> = ({ title, img, description, link })
         </CardActionArea>
       </Card>
     </Link>
-
   );
 }
 
-export default  BlogCards;
+export default BlogCards;
