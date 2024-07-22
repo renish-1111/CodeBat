@@ -1,5 +1,5 @@
 import Navbar from './core/Navbar'
-import Cards from './core/Cards'
+import Cards from './core/Card/Cards'
 
 // Combine data into a single array of objects
 const tutorials = [

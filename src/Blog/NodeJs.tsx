@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import Navbar from '../component/core/Navbar.tsx';
 import recentBlog from '../../config/recentBlog.ts';
-import BlogSkeleton from '../component/core/BlogSkeletol.tsx';
+import BlogSkeleton from '../component/core/Skeleton/BlogSkeletol.tsx';
 import { useEffect, useState } from 'react';
 
 interface BlogPost {

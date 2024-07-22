@@ -5,7 +5,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import { Link } from 'react-router-dom';
-import BlogCardsSkeleton from './BlogCardsSkeleton.tsx'; // Assuming BlogCardsSkeleton is in the same directory
+import BlogCardsSkeleton from '../Skeleton/BlogCardsSkeleton.tsx'; // Assuming BlogCardsSkeleton is in the same directory
 
 interface BlogCardsProps {
   title: string;

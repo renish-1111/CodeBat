@@ -1,6 +1,6 @@
 import React from 'react';
 import Skeleton from '@mui/material/Skeleton';
-import recentBlog from '../../../config/recentBlog';
+import recentBlog from '../../../../config/recentBlog';
 import { Link } from 'react-router-dom';
 
 interface BlogPost {
