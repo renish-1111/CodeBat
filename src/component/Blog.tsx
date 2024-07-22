@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Navbar from "./core/Navbar";
 import recentBlog from "../../config/recentBlog";
-import blogDetail from "../../config/blogDetail";
+import blogDetail from "../../config/blogDetail.ts";
 import BlogCards from './core/BlogCards';
 
 interface BlogPost {

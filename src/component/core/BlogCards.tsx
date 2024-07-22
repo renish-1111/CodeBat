@@ -32,8 +32,8 @@ const BlogCards: React.FC<BlogCardsProps> = ({ title, img, description, link }) 
         <CardActionArea>
           <CardMedia
             component="img"
-            height={300}
-            width={300}
+            height={250}
+            width={450}
             image={img}
             alt="error"
             className='rounded-lg p-2'
