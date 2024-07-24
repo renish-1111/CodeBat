@@ -17,20 +17,17 @@ const link = ['/tutorial', '/about', '/blog', 'mailto:ponkiyarenish@gmail.com'];
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
 
-
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
   };
-
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-
   return (
     <div className='mb-4 fixed w-full top-0 left-0 z-10'>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ bgcolor: 'black' }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <img className='h-1' src="" alt="" />
@@ -46,7 +43,7 @@ function Navbar() {
                   fontFamily: 'monospace',
                   fontWeight: 700,
                   letterSpacing: '.3rem',
-                  color: 'inherit',
+                  color: 'white',
                   textDecoration: 'none',
                 }}
               >
@@ -85,25 +82,11 @@ function Navbar() {
                 {pages.map((page, index) => (
                   <Link key={index} to={link[index]}>
                     <MenuItem key={page} onClick={handleCloseNavMenu}>
-                      <Typography textAlign="center">
+                      <Typography textAlign="center" sx={{ color: 'black' }}>
                         {page}
                       </Typography>
                     </MenuItem>
                   </Link>
-                ))}
-                {pages.map((page, index) => (
-
-                  <Link key={index} to={link[index]}>
-                    <Button
-                      key={page}
-                      onClick={handleCloseNavMenu}
-                      sx={{ my: 2, color: 'white', display: 'block' }}
-                    >
-                      {page}
-
-                    </Button>
-                  </Link>
-
                 ))}
               </Menu>
             </Box>
@@ -119,7 +102,7 @@ function Navbar() {
                 fontFamily: 'monospace',
                 fontWeight: 700,
                 letterSpacing: '.3rem',
-                color: 'inherit',
+                color: 'white',
                 textDecoration: 'none',
               }}
             >
@@ -127,7 +110,6 @@ function Navbar() {
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               {pages.map((page, index) => (
-
                 <Link key={index} to={link[index]}>
                   <Button
                     key={page}
@@ -135,18 +117,15 @@ function Navbar() {
                     sx={{ my: 2, color: 'white', display: 'block' }}
                   >
                     {page}
-
                   </Button>
                 </Link>
-
               ))}
             </Box>
-
-
           </Toolbar>
         </Container>
       </AppBar>
     </div>
   );
 }
+
 export default Navbar;

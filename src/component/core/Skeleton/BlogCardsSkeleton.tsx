@@ -15,15 +15,15 @@ const BlogCardsSkeleton: React.FC = () => {
   const skeletonHeight = isMobile ? 200 : isTablet ? 200 : 250;
 
   return (
-    <Card sx={{ maxWidth: skeletonWidth + 50 }}>
+    <Card sx={{ maxWidth: skeletonWidth + 50 , bgcolor:'#121212' }}>
       <div className="flex justify-center m-2">
         <CardActionArea>
           <div className="flex justify-center"> {/* Add this div with flexbox */}
-            <Skeleton variant="rectangular" width={skeletonWidth} height={skeletonHeight} animation="wave" />
+            <Skeleton sx={{bgcolor:'#ababab' }} variant="rectangular"   width={skeletonWidth} height={skeletonHeight} animation="pulse" />
           </div>
           <CardContent>
-            <Skeleton animation="wave" height={40} width="100%" style={{ marginBottom: 6 }} />
-            <Skeleton animation="wave" height={20} width="100%" />
+            <Skeleton sx={{bgcolor:'#ababab' }} animation="pulse" height={40} width="100%" style={{ marginBottom: 6}} />
+            <Skeleton sx={{bgcolor:'#ababab' }} animation="pulse" height={20} width="100%" />
           </CardContent>
         </CardActionArea>
       </div>

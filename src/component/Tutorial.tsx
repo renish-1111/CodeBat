@@ -1,24 +1,20 @@
 import Navbar from './core/Navbar'
 import Cards from './core/Card/Cards'
-
-// Combine data into a single array of objects
-const tutorials = [
-  { title: 'C programing', img: 'assets/c.jpeg', desc: 'best lag', link: '/tutorial/c' },
-  { title: 'Java', img: 'assets/as.java.png', desc: 'good', link: '/tutorial/java' },
-];
+import tutorialCardDetail from '../../config/tutorialCardDetail'
 
 const Tutorial = () => {
   return (
     <div>
       <Navbar />
-
-      <div className='container mt-20'>
-        <div className="flex flex-row flex-wrap gap-4 justify-evenly">
-          {tutorials.map((tutorial, index) => (
-            <Cards key={index} {...tutorial} /> // Spread the object properties
+      <main className="flex mt-20 justify-start items-center justify-center">
+        <div className="grid grid-cols-4 gap-10 justify-center">
+          {tutorialCardDetail.map((tutorial, index) => (
+            <div className="py-16 md:py-13" key={index}>
+              <Cards {...tutorial} />
+            </div>
           ))}
         </div>
-      </div>
+      </main>
     </div>
   )
 }

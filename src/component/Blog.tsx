@@ -22,7 +22,7 @@ const Blog = () => {
                     </div>
                 </div>
 
-                <div className="bg-[#1876d3] mt-3 text-[#fefffe] h-96 rounded-3xl flex-col w-4/12 md:w-3/12 mr-2 hidden lg:flex p-2">
+                <div className="bg-[#000000] mt-3 text-[#fefffe] h-96 rounded-3xl flex-col w-4/12 md:w-3/12 mr-2 hidden lg:flex p-2">
                     <h3 className="text-center text-3xl">Recent Post</h3>
                     <ul className="flex flex-col m-3 gap-2 mt-5 text-lg">
                         {recentBlog.map((blog: BlogPost, index) => (

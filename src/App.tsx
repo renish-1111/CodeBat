@@ -18,7 +18,7 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <Suspense fallback={<div className='h-screen w-full flex justify-center items-center'>
-        <CircularProgress style={{ color: 'primary' }} size={100} className='' />
+        <CircularProgress style={{ color: 'black' }} size={100} className='' />
       </div>}>
         <Routes>
           <Route path="/" element={<Home />} />

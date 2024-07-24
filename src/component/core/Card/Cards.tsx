@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -6,39 +5,34 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-
-interface CardsProps {
+interface CardProps {
   title: string;
-  img: string;
-  desc?: string;
-  link: string;
+  image: string;
+  link:string;
 }
 
-const Cards: React.FC<CardsProps> = ({ title, img, desc, link }) => {
+// Use the CardProps interface as the type for the props parameter
+export default function Cards(props: CardProps) {
   return (
-    <Link to={link}>
-      <Card sx={{ minWidth: 200 }}>
+    <Link to={props.link}>
+      <Card sx={{ maxHeight: 440 , minWidth:280 , bgcolor:"#121212"}}>
         <CardActionArea>
           <CardMedia
             component="img"
-            height="140"
-            width="140"
-            image={img}
+            style={{ objectFit: 'cover' }}
+            image={props.image}
             alt="error"
-            className='rounded-lg p-2'
+            sx={{ padding:"12px" , bgcolor:"#121212"}}
           />
           <CardContent>
-            <Typography gutterBottom variant="h6" component="div">
-              {title}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {desc}
+            <Typography gutterBottom variant="h5" component="div" >
+              <div className='flex justify-center text-white'>
+              {props.title}
+              </div>
             </Typography>
           </CardContent>
         </CardActionArea>
       </Card>
     </Link>
   );
-};
-
-export default Cards;
+}

@@ -28,7 +28,7 @@ const BlogCards: React.FC<BlogCardsProps> = ({ title, img, description, link }) 
 
   return (
     <Link to={link}>
-      <Card sx={{ maxWidth: 450 }}>
+      <Card sx={{ maxWidth: 450 , bgcolor:'#121212',color:'white'}}>
         <CardActionArea>
           <CardMedia
             component="img"
@@ -47,6 +47,7 @@ const BlogCards: React.FC<BlogCardsProps> = ({ title, img, description, link }) 
               WebkitLineClamp: 2,
               WebkitBoxOrient: 'vertical',
               overflow: 'hidden',
+              color:'white',
               textOverflow: 'ellipsis',
             }}>
               {description}
