@@ -4,6 +4,8 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import { Link } from 'react-router-dom';
+import CardsSkeleton from '../Skeleton/CardsSkeleton';
+import { useEffect, useState } from 'react';
 
 interface CardProps {
   title: string;
@@ -13,9 +15,21 @@ interface CardProps {
 
 // Use the CardProps interface as the type for the props parameter
 export default function Cards(props: CardProps) {
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2000); // Simulate loading time
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <CardsSkeleton />;
+  }
+
   return (
     <Link to={props.link}>
-      <Card sx={{ maxHeight: 440 , minWidth:280 , bgcolor:"#121212"}}>
+      <Card sx={{ minHeight: 20 , minWidth:280 , bgcolor:"#121212"}}>
         <CardActionArea>
           <CardMedia
             component="img"

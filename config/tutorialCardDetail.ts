@@ -7,34 +7,25 @@ interface TutorialCardDetail {
 const tutorialCardDetail : TutorialCardDetail[] = [
     {
         title: "C programing",
-        image: "assets/c.jpeg",
+        image: "assets/c.png",
         link: "/tutorial/c",
     },
     {
-        title: "Java",
-        image: "assets/as.java.png",
-        link: "/tutorial/java",
-    },
-    {
-        title: "C programing",
-        image: "assets/c.jpeg",
-        link: "/tutorial/c",
+        title: "C++",
+        image: "assets/cpp.png",
+        link: "/tutorial/cpp",
     },
     {
         title: "Java",
-        image: "assets/as.java.png",
+        image: "assets/java.png",
         link: "/tutorial/java",
     },
     {
-        title: "C programing",
-        image: "assets/c.jpeg",
-        link: "/tutorial/c",
+        title: "Java Script",
+        image: "assets/js.png",
+        link: "/tutorial/javascript",
     },
-    {
-        title: "Java",
-        image: "assets/as.java.png",
-        link: "/tutorial/java",
-    },
+   
 ];
 
 export default tutorialCardDetail;
