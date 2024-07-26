@@ -1,16 +1,19 @@
 import Navbar from '../../component/core/Navbar'
-import SecondaryBar from './SecondaryBar'
+import Sidebar from '../../component/core/Sidebar'
+import CSidebar from '../../../config/CSidebar'
+
 
 
 const C = () => {
     return (
         <div>
             <div>
-                <Navbar />
+                <Navbar component={<Sidebar sideOption={CSidebar} />} />
             </div>
-            <div className='mt-16 md:mt-20'>
-                <SecondaryBar />
-            </div>
+            <main className='mt-20 text-white'>
+               
+
+            </main>
         </div>
     )
 }

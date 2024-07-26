@@ -14,7 +14,11 @@ import { Link } from 'react-router-dom';
 const pages = ['Tutorial', 'About', 'Blog', 'Feedback'];
 const link = ['/tutorial', '/about', '/blog', 'mailto:ponkiyarenish@gmail.com'];
 
-function Navbar() {
+interface NavbarProps {
+  component?: React.ReactElement;
+}
+
+function Navbar(props: NavbarProps) {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -121,6 +125,7 @@ function Navbar() {
                 </Link>
               ))}
             </Box>
+            {props.component}
           </Toolbar>
         </Container>
       </AppBar>
