@@ -14,7 +14,7 @@ const NodeJs = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 2000); // Simulate loading time
+    const timer = setTimeout(() => setLoading(false), 1000); // Simulate loading time
     return () => clearTimeout(timer);
   }, []);
 

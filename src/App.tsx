@@ -3,6 +3,7 @@ import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './component/core/Navbar';
 import CircularProgress from '@mui/material/CircularProgress';
+import Introduction from './tutorial/C/Introduction';
 
 // Lazy loading components
 const Home = lazy(() => import('./component/Home'));
@@ -27,6 +28,7 @@ function App() {
           <Route path="/blog/nodejs" element={<NodeJs />} />
           <Route path="/tutorial" element={<Tutorial />} />
           <Route path="/tutorial/c" element={<C />} />
+          <Route path="/tutorial/c/introduction" element={<Introduction />} />
           <Route path="/tutorial/java" element={<Java />} />
         </Routes>
       </Suspense>

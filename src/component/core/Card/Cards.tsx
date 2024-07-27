@@ -19,7 +19,7 @@ export default function Cards(props: CardProps) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 2000); // Simulate loading time
+    const timer = setTimeout(() => setLoading(false), 1000); // Simulate loading time
     return () => clearTimeout(timer);
   }, []);
 
@@ -29,14 +29,14 @@ export default function Cards(props: CardProps) {
 
   return (
     <Link to={props.link}>
-      <Card sx={{ minHeight: 20 , minWidth:280 , bgcolor:"#121212"}}>
+      <Card sx={{ minHeight: 350 , minWidth:300 , bgcolor:"#121212"}}>
         <CardActionArea>
           <CardMedia
             component="img"
             style={{ objectFit: 'cover' }}
             image={props.image}
             alt="error"
-            sx={{ padding:"12px" , bgcolor:"#121212"}}
+            sx={{ minHeight: 300, padding:"12px" , bgcolor:"#121212"}}
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div" >
