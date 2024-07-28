@@ -2,9 +2,9 @@ import Navbar from "./core/Navbar";
 
 const About = () => {
   return (
-    <div>
+    <div className="bg-tut-bg ">
       <Navbar />
-      <div className="mt-24 mx-5 xl:mx-20">
+      <div className="pt-24 px-5 xl:px-20">
         {/* 1 */}
         <div className="flex flex-col xl:flex-row gap-8 my-10 xl:my-7">
           <div className="bg-white rounded-lg shadow-2xl p-8 w-full xl:w-1/2 flex flex-col items-center justify-center">
@@ -111,7 +111,7 @@ const About = () => {
           </div>
         </div>
         {/* 7 */}
-        <div className="flex flex-col xl:flex-row gap-8 my-10 xl:my-7">
+        <div className="flex flex-col xl:flex-row gap-8 py-10 xl:py-7">
           <div className="bg-white rounded-lg shadow-2xl p-8 w-full xl:w-1/2 flex flex-col items-center justify-center">
             <p className="text-5xl xl:text-7xl font-bold text-center xl:text-center">
               Contact Us

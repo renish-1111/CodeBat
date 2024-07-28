@@ -14,7 +14,7 @@ const Introduction = () => {
             <div className="md:m-5 mt-20 md:mt-24">
 
                 <div className="flex justify-between m-5">
-                    <Link to='/tutorial/c/introduction'>
+                    <Link to='/tutorial/c'>
                         <Button variant="contained" color="secondary" sx={{ bgcolor: '#121212', ":hover": { bgcolor: 'white', color: 'black' }, width: '100%', maxWidth: '200px' }}>Preview</Button>
                     </Link>
                     <Link to='/tutorial/c'>
@@ -38,6 +38,15 @@ int main() {
                     />
                 </div>
 
+                <div className="flex justify-between m-5">
+                    <Link to='/tutorial/c'>
+                        <Button variant="contained" color="secondary" sx={{ bgcolor: '#121212', ":hover": { bgcolor: 'white', color: 'black' }, width: '100%', maxWidth: '200px' }}>Preview</Button>
+                    </Link>
+                    <Link to='/tutorial/c'>
+                        <Button variant="contained" color="primary" className="mr-2" sx={{ bgcolor: '#121212', ":hover": { bgcolor: 'white', color: 'black' }, width: '100%', maxWidth: '200px' }}>Next</Button>
+                    </Link>
+                </div>
+                
             </div>
         </>
     );

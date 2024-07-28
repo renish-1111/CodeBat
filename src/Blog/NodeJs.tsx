@@ -24,7 +24,7 @@ const NodeJs = () => {
 
   return (
 
-    <div className="text-white">
+    <div className="text-white ">
       <Navbar />
 
       <div className="my-20 w-full flex flex-row justify-evenly">

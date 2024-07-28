@@ -11,9 +11,9 @@ interface BlogPost {
 
 const Blog = () => {
     return (
-        <div>
+        <div className="bg-tut-bg">
             <Navbar />
-            <div className="my-20 w-full flex justify-center">
+            <div className="py-20 w-full flex justify-center">
                 <div className="mx-5 lg:mx-auto mt-5 lg:w-8/12">
                     <div className="grid md:grid-cols-2 gap-5 ">
                         {blogDetail.map((blog, index) => (

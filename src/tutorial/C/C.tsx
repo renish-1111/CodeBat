@@ -7,7 +7,7 @@ import { Button } from '@mui/material';
 
 const C = () => {
     return (
-        <div>
+        <div className='bg-main-bg'>
             <Navbar component={<Sidebar sideOption={CSidebar} />} />
             <div className=' text-white flex flex-col items-center justify-center h-screen'>
                 <div className='px-2 kranky-regular text-center mx-5 text-2xl font-bold tracking-widest leading-tight md:text-4xl md:leading-tight'>
