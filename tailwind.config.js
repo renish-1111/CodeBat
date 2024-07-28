@@ -1,9 +1,10 @@
 /** @type {import('tailwindcss').Config} */
-export default {
-  content: [
+module.exports = {
+  purge: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
       backgroundImage: {
@@ -11,6 +12,9 @@ export default {
         'tut-bg': "url('./public/assets/tutbg.jpg')",
       }
     },
+  },
+  variants: {
+    extend: {},
   },
   plugins: [],
 }
