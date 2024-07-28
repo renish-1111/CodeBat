@@ -3,8 +3,11 @@ import Sidebar from '../../component/core/Sidebar';
 import CSidebar from '../../../config/CSidebar';
 import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
+import CodeBlock from '../../component/core/CodeBlock';
 
 const Introduction = () => {
+
+
     return (
         <>
             <Navbar component={<Sidebar sideOption={CSidebar} />} />
@@ -23,6 +26,17 @@ const Introduction = () => {
                     <h1 className="text-4xl font-bold">Introduction to C Programming</h1>
                     <p className='mt-5'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reiciendis illo, natus quas provident odio assumenda a? Eaque, dolorum! Ratione, consectetur? Repudiandae dolores, maiores eaque minus amet nihil, eveniet repellat, sed consequuntur aspernatur non ducimus animi ipsam excepturi. Amet, earum quod.</p>
                 </main>
+                <div className="mx-1">
+
+                    <CodeBlock
+                        code="#include <stdio.h>
+int main() {
+    printf('Hello, World!');
+    return 0;
+}"
+                        language='c'
+                    />
+                </div>
 
             </div>
         </>
