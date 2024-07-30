@@ -1,4 +1,5 @@
 import Navbar from "./core/Navbar";
+import Footer from "./core/Footer";
 
 const About = () => {
   return (
@@ -126,6 +127,7 @@ const About = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
