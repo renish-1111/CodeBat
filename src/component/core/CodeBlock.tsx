@@ -16,7 +16,7 @@ const CodeBlock = ({ code, language}: CodeBlockInterface) => {
                 showLineNumbers={!isMobileScreen}
                 theme={monokai}
                 codeBlock
-            />;
+            />
         </div>
     )
 }
