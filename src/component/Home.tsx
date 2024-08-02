@@ -2,7 +2,6 @@ import Navbar from "./core/Navbar";
 import Animation from "./Animation";
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
-import Footer from "./core/Footer";
 
 
 const Home = () => {
@@ -12,7 +11,7 @@ const Home = () => {
       <main className="flex-grow" id="1">
         <div className="bg-main-bg bg-fixed h-screen w-full -z-10 bg-no-repeat bg-cover text-white relative">
           <div className="absolute inset-0 flex items-center justify-center">
-            <p className="kranky-regular text-center mx-5 text-2xl font-bold tracking-widest leading-tight md:text-3xl md:leading-tight md:mx-40 md:text-start">
+            <p className="kranky-regular text-center mx-5 text-2xl font-bold tracking-widest leading-tight md:text-3xl md:leading-tight md:mx-40 ">
               <Animation sequence={[
                 "Welcome to Codebat!        ", 10,
                 "Your one-stop destination for coding tutorials        ", 10,
@@ -63,7 +62,6 @@ const Home = () => {
           </div>
         </div>
       </main>
-      <Footer />
     </div>
   );
 };

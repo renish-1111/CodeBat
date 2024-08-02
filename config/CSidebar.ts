@@ -5,7 +5,7 @@ interface CSidebar {
 
 const CSidebar : CSidebar[] = [
     { text: 'Introduction', link: '/tutorial/c/introduction' },
-    { text: 'Variables', link: '/tutorial/c/variables' },
+    { text: 'Setup', link: '/tutorial/c/setup' },
     { text: 'Functions', link: '/tutorial/c/functions' },
     { text: 'Arrays', link: '/tutorial/c/arrays' },
 ];

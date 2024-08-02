@@ -3,7 +3,6 @@ import Navbar from "./core/Navbar";
 import recentBlog from "../../config/recentBlog";
 import blogDetail from "../../config/blogDetail.ts";
 import BlogCards from './core/Card/BlogCards.tsx';
-import Footer from "./core/Footer.tsx";
 
 interface BlogPost {
     title: string;
@@ -34,7 +33,6 @@ const Blog = () => {
                     </ul>
                 </div>
             </div>
-            <Footer />
         </div>
     );
 };

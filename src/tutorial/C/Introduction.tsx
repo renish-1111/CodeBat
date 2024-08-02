@@ -17,7 +17,7 @@ const Introduction = () => {
                     <Link to='/tutorial/c'>
                         <Button variant="contained" color="secondary" sx={{ bgcolor: '#121212', ":hover": { bgcolor: 'white', color: 'black' }, width: '100%', maxWidth: '200px' }}>Preview</Button>
                     </Link>
-                    <Link to='/tutorial/c'>
+                    <Link to='/tutorial/c/setup'>
                         <Button variant="contained" color="primary" className="mr-2" sx={{ bgcolor: '#121212', ":hover": { bgcolor: 'white', color: 'black' }, width: '100%', maxWidth: '200px' }}>Next</Button>
                     </Link>
                 </div>
@@ -75,7 +75,7 @@ int main() {          // Main function: the entry point of the program
                     <Link to='/tutorial/c'>
                         <Button variant="contained" color="secondary" sx={{ bgcolor: '#121212', ":hover": { bgcolor: 'white', color: 'black' }, width: '100%', maxWidth: '200px' }}>Preview</Button>
                     </Link>
-                    <Link to='/tutorial/c'>
+                    <Link to='/tutorial/c/setup'>
                         <Button variant="contained" color="primary" className="mr-2" sx={{ bgcolor: '#121212', ":hover": { bgcolor: 'white', color: 'black' }, width: '100%', maxWidth: '200px' }}>Next</Button>
                     </Link>
                 </div>

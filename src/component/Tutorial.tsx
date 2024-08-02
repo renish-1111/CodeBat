@@ -1,7 +1,6 @@
 import Navbar from './core/Navbar'
 import Cards from './core/Card/Cards'
 import tutorialCardDetail from '../../config/tutorialCardDetail'
-import Footer from "./core/Footer";
 
 
 const Tutorial = () => {
@@ -17,7 +16,6 @@ const Tutorial = () => {
           ))}
         </div>
       </main>
-      <Footer />
     </div>
   )
 }
