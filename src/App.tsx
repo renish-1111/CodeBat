@@ -8,9 +8,14 @@ import Introduction from './tutorial/C/Introduction';
 import Setup from './tutorial/C/Setup';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
+import CreateBlogPage from './component/core/CreateBlogPage';
 
 // Lazy loading components
 const Home = lazy(() => import('./component/Home'));
+const Login = lazy(() => import('./component/Login'));
+const Signup = lazy(() => import('./component/Signup'));
+const Admin = lazy(() => import('./component/Admin'));
 const Tutorial = lazy(() => import('./component/Tutorial'));
 const C = lazy(() => import('./tutorial/C/C'));
 const Java = lazy(() => import('./tutorial/Java'));
@@ -33,13 +38,27 @@ function App() {
 
   return (
     <BrowserRouter>
-     <ScrollToTop />
+      <ScrollToTop />
       <Navbar />
       <Suspense fallback={<div className='h-screen w-full flex justify-center items-center'>
         <CircularProgress style={{ color: 'black' }} size={100} className='' />
       </div>}>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/admin"element={
+            <ProtectedRoute>
+              <Admin />
+            </ProtectedRoute>
+          }
+        />
+          <Route path="/create-blog" element={
+            <ProtectedRoute>
+              <CreateBlogPage />
+            </ProtectedRoute>
+          }
+        />
           <Route path="/about" element={<About />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/nodejs" element={<NodeJs />} />
