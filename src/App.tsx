@@ -9,7 +9,11 @@ import Setup from './tutorial/C/Setup';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
-import CreateBlogPage from './component/core/CreateBlogPage';
+import CreateBlogPage from './component/CreateBlogPage';
+import BlogUpdate from './component/BlogUpdate';
+import BlogDelete from './component/BlogDelete';
+
+
 
 // Lazy loading components
 const Home = lazy(() => import('./component/Home'));
@@ -47,18 +51,31 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/admin"element={
+          <Route path="/admin" element={
             <ProtectedRoute>
               <Admin />
             </ProtectedRoute>
           }
-        />
+          />
           <Route path="/create-blog" element={
             <ProtectedRoute>
               <CreateBlogPage />
             </ProtectedRoute>
           }
-        />
+          />
+          <Route path="/blogUpdate/:blogId" element={
+            <ProtectedRoute>
+              <BlogUpdate />
+            </ProtectedRoute>
+          }
+          />
+          <Route path="/blogDelete/:blogId" element={
+            <ProtectedRoute>
+              <BlogDelete />
+            </ProtectedRoute>
+          }
+          />
+         
           <Route path="/about" element={<About />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/nodejs" element={<NodeJs />} />

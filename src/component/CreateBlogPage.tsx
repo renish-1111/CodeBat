@@ -63,9 +63,9 @@ const CreateBlogPage: React.FC = () => {
       {userId && (
         <form 
           onSubmit={handleSubmit} 
-          className="w-full max-w-3xl  text-white my-2"
+          className="w-full max-w-3xl  text-white my-2 " 
         >
-          <div className='my-3'>
+          <div className='my-3 mx-4 md:mx-0'>
           <TextField
             label="Title"
             value={title}
@@ -85,7 +85,7 @@ const CreateBlogPage: React.FC = () => {
             }}
           />
           </div>
-         <div className='my-3'>
+         <div className='my-3 mx-4 md:mx-0'>
          <TextField
             label="Content"
             value={content}
@@ -107,7 +107,7 @@ const CreateBlogPage: React.FC = () => {
             }}
           />
          </div>
-          <div className='my-3'>
+          <div className='my-3 mx-4 md:mx-0'>
           <Input
             type="file"
             onChange={handleImageChange}
@@ -126,7 +126,8 @@ const CreateBlogPage: React.FC = () => {
             }}
           />
           </div>
-          <Button 
+         <div className='my-3 mx-4 md:mx-0'>
+         <Button 
             type="submit" 
             variant="contained" 
             color="primary" 
@@ -135,6 +136,7 @@ const CreateBlogPage: React.FC = () => {
           >
             Create Blog
           </Button>
+         </div>
         </form>
       )}
     </div>
