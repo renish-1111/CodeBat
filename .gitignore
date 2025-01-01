@@ -130,4 +130,6 @@ dist
 .pnp.*
 .Topic/C lang.txt
 
+# uploading files to github
+codebate-back/uploads/
 

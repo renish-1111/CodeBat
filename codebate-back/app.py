@@ -12,7 +12,7 @@ load_dotenv()
 
 # Initialize Flask app
 app = Flask(__name__)
-CORS(app, resources={r"/admin/*": {"origins": "*", "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"]}})
+CORS(app)
 
 # MySQL configuration
 app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
@@ -88,7 +88,7 @@ def create_blog():
     return jsonify({'message': 'Blog created successfully'}), 200
 
 # Get all blogs route
-@app.route('/blogs', methods=['GET'])
+@app.route('/blogs/', methods=['GET'])
 def get_blogs():
     user_id = request.args.get('user_id')
     cur = mysql.connection.cursor()
@@ -98,7 +98,7 @@ def get_blogs():
     return jsonify({'blogs': blogs}), 200
 
 # Get, update, or delete a single blog route
-@app.route('/admin/blogs/<int:blog_id>', methods=['GET', 'PUT', 'DELETE', 'OPTIONS'])
+@app.route('/admin/blogs/<int:blog_id>/', methods=['GET', 'PUT', 'DELETE', 'OPTIONS'])
 def manage_blog(blog_id):
     if request.method == 'OPTIONS':
         response = make_response()
@@ -128,11 +128,12 @@ def manage_blog(blog_id):
         return jsonify({'message': 'Blog not found'}), 404
     
     elif request.method == 'PUT':
+        user_id = request.args.get('user_id')
         data = request.get_json()
         title, content = data.get('title'), data.get('content')
 
         cur = mysql.connection.cursor()
-        cur.execute("UPDATE blogs SET title = %s, content = %s WHERE id = %s", (title, content, blog_id))
+        cur.execute("UPDATE blogs SET title = %s, content = %s WHERE id = %s AND user_id = %s", (title, content, blog_id,user_id))
         mysql.connection.commit()
         cur.close()
         return jsonify({'message': 'Blog updated successfully'}), 200

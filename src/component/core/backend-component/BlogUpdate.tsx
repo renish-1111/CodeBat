@@ -31,7 +31,8 @@ const BlogUpdate: React.FC = () => {
 
     const handleUpdate = async () => {
         try {
-            const response = await axios.put(`http://localhost:5000/admin/blogs/${blogId}`, {
+            const user_id = localStorage.getItem('userId');
+            const response = await axios.put(`http://localhost:5000/admin/blogs/${blogId}/?user_id=${user_id}`, {
                 title,
                 content,
             });

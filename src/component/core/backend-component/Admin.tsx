@@ -37,8 +37,13 @@ const Admin = () => {
     }
   };
 
-  const handleDelete = async () => {
-    navigate(`/blogDelete/${blogId}`);
+  const handleDelete =  () => {
+    if (blogId) {
+      navigate(`/blogDelete/${blogId}`);
+    }
+  };
+  const handleAdd =  () => {
+    navigate(`/blogCreate`);
   };
 
   useEffect(() => {
@@ -92,6 +97,12 @@ const Admin = () => {
         className="w-full mb-4 bg-zinc-600 p-3"
       />
       <div className='row m-2 flex gap-4'>
+        <button
+          onClick={handleAdd}
+          className="bg-green-600 text-white px-4 py-2 rounded"
+        >
+          Add Blog
+        </button>
         <button
           onClick={handleEdit}
           className="bg-amber-600 text-white px-4 py-2 rounded"
