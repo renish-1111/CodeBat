@@ -2,32 +2,29 @@ import os
 import uuid
 import hashlib
 from flask import Flask, request, jsonify, make_response
-from flask_mysqldb import MySQL  # type: ignore
 from werkzeug.utils import secure_filename
-from dotenv import load_dotenv  # type: ignore
+from dotenv import load_dotenv
 from flask_cors import CORS
+from flask_migrate import Migrate
+from models import db, init_app, get_user_by_email, create_user, get_blog_by_id_and_user, create_blog, update_blog, delete_blog, Blog
 
 # Load environment variables
 load_dotenv()
 
 # Initialize Flask app
 app = Flask(__name__)
-CORS(app)
+
+# Enable CORS for all domains (adjust for production)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # MySQL configuration
-app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
-app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
-app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
-app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['UPLOAD_FOLDER'] = os.getenv('UPLOAD_FOLDER', './uploads')
 
-# Upload folder configuration
-UPLOAD_FOLDER = 'uploads'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-# Ensure upload folder exists
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-mysql = MySQL(app)
+# Initialize database and migrations
+init_app(app)
+migrate = Migrate(app, db)
 
 # Helper function for hashing passwords
 def hash_password(password):
@@ -38,117 +35,103 @@ def hash_password(password):
 def signup():
     data = request.get_json()
     name, email, password = data.get('name'), data.get('email'), data.get('password')
-    hashed_password = hash_password(password)
 
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT id FROM users WHERE email = %s", (email,))
-    if cur.fetchone():
-        cur.close()
+    if not all([name, email, password]):
+        return jsonify({'message': 'All fields are required'}), 400
+
+    if get_user_by_email(email):
         return jsonify({'message': 'Email already exists'}), 400
 
-    cur.execute("INSERT INTO users (name, email, password) VALUES (%s, %s, %s)", (name, email, hashed_password))
-    mysql.connection.commit()
-    cur.close()
-    return jsonify({'message': 'User created successfully'}), 200
+    create_user(name, email, hash_password(password))
+    return jsonify({'message': 'User created successfully'}), 201
 
 # Login route
 @app.route('/admin/login', methods=['POST'])
 def login():
     data = request.get_json()
     email, password = data.get('email'), data.get('password')
-    hashed_password = hash_password(password)
 
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT id, name, email FROM users WHERE email = %s AND password = %s", (email, hashed_password))
-    user = cur.fetchone()
-    cur.close()
+    if not all([email, password]):
+        return jsonify({'message': 'Email and password are required'}), 400
 
-    if user:
-        return jsonify({'message': 'Login successful', 'user': {'id': user[0], 'name': user[1], 'email': user[2]}}), 200
+    user = get_user_by_email(email)
+    if user and user.password == hash_password(password):
+        return jsonify({'message': 'Login successful', 'user': {'id': user.id, 'name': user.name, 'email': user.email}}), 200
+
     return jsonify({'message': 'Invalid email or password'}), 401
 
 # Create blog route
 @app.route('/admin/blogs', methods=['POST'])
-def create_blog():
+def create_blog_route():
     data = request.form
-    title, content, user_id, description = data.get('title'), data.get('content'), data.get('user_id'), data.get('description')
+    title, content, user_id = data.get('title'), data.get('content'), data.get('user_id')
+    description = data.get('description')
     cover_image = request.files.get('coverImage')
 
-    cur = mysql.connection.cursor()
+    if not all([title, content, user_id]):
+        return jsonify({'message': 'Title, content, and user ID are required'}), 400
+
     if cover_image:
         file_extension = cover_image.filename.split('.')[-1]
         unique_filename = secure_filename(f"{uuid.uuid4().hex}.{file_extension}")
-        cover_image.save(os.path.join(app.config['UPLOAD_FOLDER'], unique_filename))
-        cur.execute("INSERT INTO blogs (title, content, user_id, description ,cover_image) VALUES (%s, %s, %s, %s, %s)", (title, content, user_id, description,unique_filename))
+        upload_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
+
+        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+        cover_image.save(upload_path)
+        create_blog(title, content, user_id, description, unique_filename)
     else:
-        cur.execute("INSERT INTO blogs (title, content ,user_id,description ) VALUES (%s, %s, %s, %s)", (title, content, user_id,description))
-    
-    mysql.connection.commit()
-    cur.close()
-    return jsonify({'message': 'Blog created successfully'}), 200
+        create_blog(title, content, user_id, description)
+
+    return jsonify({'message': 'Blog created successfully'}), 201
 
 # Get all blogs route
 @app.route('/blogs/', methods=['GET'])
 def get_blogs():
     user_id = request.args.get('user_id')
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT id, title, content, user_id, description ,cover_image FROM blogs WHERE user_id = %s", (user_id))
-    blogs = [{'id': blog[0], 'title': blog[1], 'content': blog[2], 'user_id': blog[3],"description":blog[4] ,'cover_image': blog[5]} for blog in cur.fetchall()]
-    cur.close()
-    return jsonify({'blogs': blogs}), 200
+    if not user_id:
+        return jsonify({'message': 'User ID is required'}), 400
 
-# Get, update, or delete a single blog route
+    blogs = Blog.query.filter_by(user_id=user_id).all()
+    if not blogs:
+        return jsonify({'message': 'No blogs found'}), 500
+    return jsonify({'blogs': [{'id': blog.id, 'title': blog.title, 'content': blog.content, 'user_id': blog.user_id} for blog in blogs]}), 200
+
+# Manage a single blog
 @app.route('/admin/blogs/<int:blog_id>/', methods=['GET', 'PUT', 'DELETE', 'OPTIONS'])
 def manage_blog(blog_id):
+    user_id = request.args.get('user_id')
+
     if request.method == 'OPTIONS':
         response = make_response()
         response.headers['Access-Control-Allow-Origin'] = '*'
         response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
         response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-        return response
-    
+        return response, 200
+
+    if not user_id:
+        return jsonify({'message': 'User ID is required'}), 400
+
     if request.method == 'GET':
-        user_id = request.args.get('user_id')
-        if not user_id:
-            return jsonify({'message': 'User ID is required'}), 400
-
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM blogs WHERE id = %s AND user_id = %s", (blog_id, user_id))
-        blog = cur.fetchone()
-        cur.close()
-
+        blog = get_blog_by_id_and_user(blog_id, user_id)
         if blog:
             return jsonify({
-                'id': blog[0],
-                'title': blog[1],
-                'content': blog[2],
-                'user_id': blog[3],
-                'cover_image': blog[4],
-                'description': blog[5],
+                'id': blog.id,
+                'title': blog.title,
+                'content': blog.content,
+                'user_id': blog.user_id,
+                'cover_image': blog.cover_image,
+                'description': blog.description,
             }), 200
         return jsonify({'message': 'Blog not found'}), 404
-    
-    elif request.method == 'PUT':
-        user_id = request.args.get('user_id')
+
+    if request.method == 'PUT':
         data = request.get_json()
         title, content, description = data.get('title'), data.get('content'), data.get('description')
-
-        cur = mysql.connection.cursor()
-        cur.execute("UPDATE blogs SET title = %s, content = %s, description = %s WHERE id = %s AND user_id = %s", (title, content, description, blog_id, user_id))
-        mysql.connection.commit()
-        cur.close()
+        update_blog(blog_id, user_id, title, content, description)
         return jsonify({'message': 'Blog updated successfully'}), 200
-        
-    elif request.method == 'DELETE':
-        user_id = request.args.get('user_id')
-        if not user_id:
-            return jsonify({'message': 'User ID is required'}), 400
 
-        cur = mysql.connection.cursor()
-        cur.execute("DELETE FROM blogs WHERE id = %s AND user_id = %s", (blog_id, user_id))
-        mysql.connection.commit()
-        cur.close()
-
+    if request.method == 'DELETE':
+        delete_blog(blog_id, user_id)
         return jsonify({'message': 'Blog deleted successfully'}), 200
 
 if __name__ == '__main__':
