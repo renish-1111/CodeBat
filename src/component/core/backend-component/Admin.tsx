@@ -6,6 +6,7 @@ const Admin = () => {
   const [blogs, setBlogs] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
+  const [loadingAction, setLoadingAction] = useState(false);
   const [error, setError] = useState('');
   const [blogId, setBlogId] = useState('');
   const navigate = useNavigate();
@@ -34,16 +35,20 @@ const Admin = () => {
 
   const handleEdit = () => {
     if (blogId) {
+      setLoadingAction(true);
       navigate(`/blogUpdate/${blogId}`);
     }
   };
 
-  const handleDelete =  () => {
+  const handleDelete = () => {
     if (blogId) {
+      setLoadingAction(true);
       navigate(`/blogDelete/${blogId}`);
     }
   };
-  const handleAdd =  () => {
+
+  const handleAdd = () => {
+    setLoadingAction(true);
     navigate(`/blogCreate`);
   };
 
@@ -101,20 +106,23 @@ const Admin = () => {
         <button
           onClick={handleAdd}
           className="bg-green-600 text-white px-4 py-2 rounded"
+          disabled={loadingAction}
         >
-          Add Blog
+          {loadingAction ? 'Loading...' : 'Add Blog'}
         </button>
         <button
           onClick={handleEdit}
           className="bg-amber-600 text-white px-4 py-2 rounded"
+          disabled={loadingAction}
         >
-          Edit Blog
+          {loadingAction ? 'Loading...' : 'Edit Blog'}
         </button>
         <button
           onClick={handleDelete}
           className="bg-red-600 text-white px-4 py-2 rounded"
+          disabled={loadingAction}
         >
-          Delete Blog
+          {loadingAction ? 'Loading...' : 'Delete Blog'}
         </button>
       </div>
     </div>

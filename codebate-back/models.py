@@ -19,6 +19,21 @@ class Blog(db.Model):
     cover_image = db.Column(db.String(200))
     description = db.Column(db.Text)  # No length limitation
     user = db.relationship('User', backref=db.backref('blogs', lazy=True))
+    
+class Language(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(200), nullable=False)
+    description = db.Column(db.Text)  # No length limitation
+
+class Tutorial(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False)
+    description = db.Column(db.Text)  # No length limitation
+    content = db.Column(db.Text, nullable=False)
+    language_id = db.Column(db.Integer, db.ForeignKey('language.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    language = db.relationship('Language', backref=db.backref('tutorials', lazy=True))
+    user = db.relationship('User', backref=db.backref('tutorials', lazy=True))
 
 def get_user_by_email(email):
     return User.query.filter_by(email=email).first()
@@ -49,3 +64,23 @@ def delete_blog(blog_id, user_id):
     if blog:
         db.session.delete(blog)
         db.session.commit()
+
+def create_tutorial(title, content, language_id, user_id, description=None):
+    tutorial = Tutorial(title=title, content=content, language_id=language_id, user_id=user_id, description=description)
+    db.session.add(tutorial)
+    db.session.commit()
+
+def update_tutorial(tutorial_id, language_id, user_id, title, content, description):
+    tutorial = Tutorial.query.filter_by(id=tutorial_id, language_id=language_id, user_id=user_id).first()
+    if tutorial:
+        tutorial.title = title
+        tutorial.content = content
+        tutorial.description = description
+        db.session.commit()
+
+def delete_tutorial(tutorial_id, language_id, user_id):
+    tutorial = Tutorial.query.filter_by(id=tutorial_id, language_id=language_id, user_id=user_id).first()
+    if tutorial:
+        db.session.delete(tutorial)
+        db.session.commit()
+
