@@ -9,12 +9,9 @@ import Setup from './tutorial/C/Setup';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
-import CreateBlogPage from './component/CreateBlogPage';
 import BlogUpdate from './component/core/backend-component/BlogUpdate';
 import BlogDelete from './component/core/backend-component/BlogDelete';
 import BlogCreate from './component/core/backend-component/BlogCreate';
-
-
 
 // Lazy loading components
 const Home = lazy(() => import('./component/Home'));
@@ -58,12 +55,7 @@ function App() {
             </ProtectedRoute>
           }
           />
-          <Route path="/create-blog" element={
-            <ProtectedRoute>
-              <CreateBlogPage />
-            </ProtectedRoute>
-          }
-          />
+         
           <Route path="/blogUpdate/:blogId" element={
             <ProtectedRoute>
               <BlogUpdate />

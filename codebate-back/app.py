@@ -71,7 +71,7 @@ def login():
 @app.route('/admin/blogs', methods=['POST'])
 def create_blog():
     data = request.form
-    title, content, user_id = data.get('title'), data.get('content'), data.get('user_id')
+    title, content, user_id, description = data.get('title'), data.get('content'), data.get('user_id'), data.get('description')
     cover_image = request.files.get('coverImage')
 
     cur = mysql.connection.cursor()
@@ -79,9 +79,9 @@ def create_blog():
         file_extension = cover_image.filename.split('.')[-1]
         unique_filename = secure_filename(f"{uuid.uuid4().hex}.{file_extension}")
         cover_image.save(os.path.join(app.config['UPLOAD_FOLDER'], unique_filename))
-        cur.execute("INSERT INTO blogs (title, content, user_id, cover_image) VALUES (%s, %s, %s, %s)", (title, content, user_id, unique_filename))
+        cur.execute("INSERT INTO blogs (title, content, user_id, description ,cover_image) VALUES (%s, %s, %s, %s, %s)", (title, content, user_id, description,unique_filename))
     else:
-        cur.execute("INSERT INTO blogs (title, content, user_id) VALUES (%s, %s, %s)", (title, content, user_id))
+        cur.execute("INSERT INTO blogs (title, content ,user_id,description ) VALUES (%s, %s, %s, %s)", (title, content, user_id,description))
     
     mysql.connection.commit()
     cur.close()
@@ -92,8 +92,8 @@ def create_blog():
 def get_blogs():
     user_id = request.args.get('user_id')
     cur = mysql.connection.cursor()
-    cur.execute("SELECT id, title, content, user_id FROM blogs WHERE user_id = %s", (user_id,))
-    blogs = [{'id': blog[0], 'title': blog[1], 'content': blog[2], 'user_id': blog[3]} for blog in cur.fetchall()]
+    cur.execute("SELECT id, title, content, user_id, description ,cover_image FROM blogs WHERE user_id = %s", (user_id))
+    blogs = [{'id': blog[0], 'title': blog[1], 'content': blog[2], 'user_id': blog[3],"description":blog[4] ,'cover_image': blog[5]} for blog in cur.fetchall()]
     cur.close()
     return jsonify({'blogs': blogs}), 200
 
@@ -123,17 +123,18 @@ def manage_blog(blog_id):
                 'title': blog[1],
                 'content': blog[2],
                 'user_id': blog[3],
-                'cover_image': blog[4]
+                'cover_image': blog[4],
+                'description': blog[5],
             }), 200
         return jsonify({'message': 'Blog not found'}), 404
     
     elif request.method == 'PUT':
         user_id = request.args.get('user_id')
         data = request.get_json()
-        title, content = data.get('title'), data.get('content')
+        title, content, description = data.get('title'), data.get('content'), data.get('description')
 
         cur = mysql.connection.cursor()
-        cur.execute("UPDATE blogs SET title = %s, content = %s WHERE id = %s AND user_id = %s", (title, content, blog_id,user_id))
+        cur.execute("UPDATE blogs SET title = %s, content = %s, description = %s WHERE id = %s AND user_id = %s", (title, content, description, blog_id, user_id))
         mysql.connection.commit()
         cur.close()
         return jsonify({'message': 'Blog updated successfully'}), 200

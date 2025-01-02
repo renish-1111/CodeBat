@@ -5,6 +5,7 @@ import axios from 'axios';
 const BlogCreate: React.FC = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [description, setDescription] = useState(''); // Added state for description
   const [coverImage, setCoverImage] = useState<File | null>(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -30,6 +31,7 @@ const BlogCreate: React.FC = () => {
       try {
         const formData = new FormData();
         formData.append('title', title);
+        formData.append('description', description); // Include description in the form data
         formData.append('content', content);
         if (coverImage) {
           formData.append('coverImage', coverImage);
@@ -57,7 +59,7 @@ const BlogCreate: React.FC = () => {
   return (
     <div className="h-screen w-full flex justify-center items-center">
       <div className="w-full max-w-2xl p-8 rounded-lg shadow-md">
-        <h2 className="text-6xl font-bold text-white mb-10 text-center">Create Blog</h2>
+        <h2 className="text-6xl font-bold text-white m-10 text-center pb-10">Create Blog</h2>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">{success}</p>}
         {userId && (
@@ -67,6 +69,24 @@ const BlogCreate: React.FC = () => {
               label="Title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              variant="outlined"
+              fullWidth
+              InputLabelProps={{ style: { color: 'white' } }}
+              InputProps={{ style: { color: 'white', backgroundColor: 'black' } }}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': { borderColor: 'white' },
+                  '&:hover fieldset': { borderColor: 'gray' },
+                  '&.Mui-focused fieldset': { borderColor: 'white' },
+                },
+              }}
+            />
+
+            {/* Description Input */}
+            <TextField
+              label="Description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               variant="outlined"
               fullWidth
               InputLabelProps={{ style: { color: 'white' } }}

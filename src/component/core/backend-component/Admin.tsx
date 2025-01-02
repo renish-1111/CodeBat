@@ -65,7 +65,7 @@ const Admin = () => {
 
       {error && <p className="text-red-500">{error}</p>}
 
-      <div className="overflow-x-auto m-10">
+      <div className="overflow-x-auto m-3">
         {Array.isArray(blogs) && blogs.length > 0 ? (
           <table className="table-auto w-full border-collapse border border-gray-300">
             <thead>
