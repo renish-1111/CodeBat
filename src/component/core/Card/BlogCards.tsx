@@ -9,12 +9,12 @@ import BlogCardsSkeleton from '../Skeleton/BlogCardsSkeleton.tsx'; // Assuming B
 
 interface BlogCardsProps {
   title: string;
-  img: string;
   description: string;
-  link: string;
+  cover_image: string;
+  id: number;
 }
 
-const BlogCards: React.FC<BlogCardsProps> = ({ title, img, description, link }) => {
+const BlogCards: React.FC<BlogCardsProps> = ({ title, description, cover_image ,id }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -25,16 +25,16 @@ const BlogCards: React.FC<BlogCardsProps> = ({ title, img, description, link }) 
   if (loading) {
     return <BlogCardsSkeleton />;
   }
-
+  
   return (
-    <Link to={link}>
+    <Link  to={`/blog/${id}`}>
       <Card sx={{ maxWidth: 450 , bgcolor:'#121212',color:'white'}}>
         <CardActionArea>
           <CardMedia
             component="img"
             height={250}
             width={450}
-            image={img}
+            image={cover_image}
             alt="error"
             className='rounded-lg p-2'
           />

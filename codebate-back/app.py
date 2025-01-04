@@ -63,26 +63,14 @@ def login():
 # Create blog route
 @app.route('/admin/blogs', methods=['POST'])
 def create_blog_route():
-    data = request.form
+    data = request.get_json()
     title, content, user_id = data.get('title'), data.get('content'), data.get('user_id')
     description = data.get('description')
-    cover_image = request.files.get('coverImage')
+    cover_image = data.get('cover_image')  # URL for cover image
 
-    if not all([title, content, user_id]):
-        return jsonify({'message': 'Title, content, and user ID are required'}), 400
-
-    if cover_image:
-        file_extension = cover_image.filename.split('.')[-1]
-        unique_filename = secure_filename(f"{uuid.uuid4().hex}.{file_extension}")
-        upload_path = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
-
-        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-        cover_image.save(upload_path)
-        create_blog(title, content, user_id, description, unique_filename)
-    else:
-        create_blog(title, content, user_id, description)
-
-    return jsonify({'message': 'Blog created successfully'}), 201
+    create_blog(title, content, user_id, description, cover_image)
+    
+    return jsonify({'message': 'Blog created successfully'}), 200
 
 # Get all blogs route
 @app.route('/blogs/', methods=['GET'])
@@ -95,6 +83,35 @@ def get_blogs():
     if not blogs:
         return jsonify({'message': 'No blogs found'}), 500
     return jsonify({'blogs': [{'id': blog.id, 'title': blog.title, 'content': blog.content, 'user_id': blog.user_id} for blog in blogs]}), 200
+
+@app.route('/api/blogs/', methods=['GET', 'OPTIONS'])
+def get_blog_frontend():
+    if request.method == 'OPTIONS':
+        response = make_response()
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        return response, 200
+    
+    blogs = Blog.query.filter_by().all()[::-1]  
+    if not blogs:
+        return jsonify({'message': 'No blogs found'}), 500
+    return jsonify({'blogs': [{'id': blog.id, 'title': blog.title, 'content': blog.content, 'description' : blog.description ,'cover_image' : blog.cover_image} for blog in blogs]}), 200
+
+# Get a single blog for frontend
+@app.route('/api/blogs/<int:blog_id>', methods=['GET', 'OPTIONS'])
+def get_blog_from_id_for_frontend(blog_id):
+    if request.method == 'OPTIONS':
+        response = make_response()
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        return response, 200
+    
+    blog = Blog.query.filter_by(id=blog_id).first()
+    if not blog:
+        return jsonify({'message': 'No blog found'}), 500
+    return jsonify({'blog': {'title': blog.title, 'content': blog.content, 'description' : blog.description ,'cover_image' : blog.cover_image}}), 200
 
 # Manage a single blog
 @app.route('/admin/blogs/<int:blog_id>/', methods=['GET', 'PUT', 'DELETE', 'OPTIONS'])
@@ -126,8 +143,8 @@ def manage_blog(blog_id):
 
     if request.method == 'PUT':
         data = request.get_json()
-        title, content, description = data.get('title'), data.get('content'), data.get('description')
-        update_blog(blog_id, user_id, title, content, description)
+        title, content, description, cover_image = data.get('title'), data.get('content'), data.get('description'),data.get('cover_image')
+        update_blog(blog_id, user_id, title, content, description, cover_image)
         return jsonify({'message': 'Blog updated successfully'}), 200
 
     if request.method == 'DELETE':

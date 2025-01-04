@@ -12,6 +12,7 @@ import ProtectedRoute from './ProtectedRoute';
 import BlogUpdate from './component/core/backend-component/BlogUpdate';
 import BlogDelete from './component/core/backend-component/BlogDelete';
 import BlogCreate from './component/core/backend-component/BlogCreate';
+import BlogContent from './component/BlogContent';
 
 // Lazy loading components
 const Home = lazy(() => import('./component/Home'));
@@ -24,6 +25,7 @@ const Java = lazy(() => import('./tutorial/Java'));
 const About = lazy(() => import('./component/About'));
 const Blog = lazy(() => import('./component/Blog'));
 const NodeJs = lazy(() => import('./Blog/NodeJs'));
+
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -78,7 +80,11 @@ function App() {
          
           <Route path="/about" element={<About />} />
           <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/nodejs" element={<NodeJs />} />
+          <Route path="/blog/:blog_id" element={<BlogContent />} />
+          <Route path="/blogs/:blog_id" element={<NodeJs />} />
+
+
+
           <Route path="/tutorial" element={<Tutorial />} />
           <Route path="/tutorial/c" element={<C />} />
           <Route path="/tutorial/c/introduction" element={<Introduction />} />

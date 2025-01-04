@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Button, TextField, Input } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const BlogCreate: React.FC = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [description, setDescription] = useState(''); // Added state for description
-  const [coverImage, setCoverImage] = useState<File | null>(null);
+  const [coverImage, setCoverImage] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [userId, setUserId] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedUserId = localStorage.getItem('userId');
@@ -28,31 +31,24 @@ const BlogCreate: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (userId) {
+      setLoading(true);
       try {
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('description', description); // Include description in the form data
-        formData.append('content', content);
-        if (coverImage) {
-          formData.append('coverImage', coverImage);
-        }
-        formData.append('user_id', String(userId));
-
-        await axios.post('http://localhost:5000/admin/blogs', formData);
-        setSuccess('Blog created successfully!');
-        setError('');
-      } catch {
+        const response = await axios.post('http://localhost:5000/admin/blogs', {
+          title,
+          content,
+          description,
+          cover_image: coverImage,
+          user_id: userId,
+        });
+        console.log(response.data);
+        setSuccess('Blog created successfully');
+        navigate('/admin');
+      } catch (error) {
         setError('Failed to create blog');
-        setSuccess('');
+        console.error(error);
+      } finally {
+        setLoading(false);
       }
-    } else {
-      setError('User ID is required');
-    }
-  };
-
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      setCoverImage(event.target.files[0]);
     }
   };
 
@@ -120,25 +116,29 @@ const BlogCreate: React.FC = () => {
               }}
             />
 
-            {/* Cover Image Upload */}
+            {/* Cover Image URL */}
             <div>
-              <Input
-                type="file"
-                onChange={handleImageChange}
-                inputProps={{ accept: 'image/*' }}
+              <TextField
+                label="Cover Image URL"
+                value={coverImage}
+                onChange={(e) => setCoverImage(e.target.value)}
+                variant="outlined"
+                fullWidth
+                InputLabelProps={{ style: { color: 'white' } }}
+                InputProps={{ style: { color: 'white', backgroundColor: 'black' } }}
                 sx={{
-                  color: 'white',
-                  '& input': { padding: '10px', color: 'white' },
-                  '& .MuiInput-underline:before': { borderBottomColor: 'gray' },
-                  '& .MuiInput-underline:hover:before': { borderBottomColor: 'white' },
-                  '& .MuiInput-underline:after': { borderBottomColor: 'white' },
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': { borderColor: 'white' },
+                    '&:hover fieldset': { borderColor: 'gray' },
+                    '&.Mui-focused fieldset': { borderColor: 'white' },
+                  },
                 }}
               />
             </div>
 
             {/* Submit Button */}
-            <Button variant="contained" color="success" fullWidth type="submit">
-              Create Blog
+            <Button variant="contained" color="success" fullWidth type="submit" disabled={loading}>
+              {loading ? 'Creating...' : 'Create Blog'}
             </Button>
           </form>
         )}

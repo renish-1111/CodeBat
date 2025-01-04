@@ -11,19 +11,21 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
 
+
 class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    cover_image = db.Column(db.String(200))
+    cover_image = db.Column(db.String(200))  # URL for cover image
     description = db.Column(db.Text)  # No length limitation
     user = db.relationship('User', backref=db.backref('blogs', lazy=True))
     
 class Language(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
-    description = db.Column(db.Text)  # No length limitation
+    description = db.Column(db.Text) # No length limitation
+    cover_image = db.Column(db.Text)
 
 class Tutorial(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -51,12 +53,13 @@ def create_blog(title, content, user_id, description=None, cover_image=None):
     db.session.add(blog)
     db.session.commit()
 
-def update_blog(blog_id, user_id, title, content, description):
+def update_blog(blog_id, user_id, title, content, description, cover_image):
     blog = Blog.query.filter_by(id=blog_id, user_id=user_id).first()
     if blog:
         blog.title = title
         blog.content = content
         blog.description = description
+        blog.cover_image = cover_image
         db.session.commit()
 
 def delete_blog(blog_id, user_id):

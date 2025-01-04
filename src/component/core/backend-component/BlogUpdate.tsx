@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Button, TextField, Input } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const BlogUpdate: React.FC = () => {
     const { blogId } = useParams();
+    const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [description, setDescription] = useState('');
-    const [coverImage, setCoverImage] = useState<File | null>(null); // For file data
-    const [imageName, setImageName] = useState<string>(''); // For file name display
+    const [coverImage, setCoverImage] = useState(''); // For URL data
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
 
     useEffect(() => {
         const userId = localStorage.getItem('userId');
@@ -21,16 +22,19 @@ const BlogUpdate: React.FC = () => {
                     setTitle(response.data.title || '');
                     setContent(response.data.content || '');
                     setDescription(response.data.description || '');
+                    setCoverImage(response.data.cover_image || '');
                 }
                 setLoading(false);
             })
             .catch((error) => {
                 console.error(error);
+                setError('Failed to fetch blog details');
                 setLoading(false);
             });
     }, [blogId]);
 
-    const handleUpdate = async () => {
+    const handleUpdate = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
         try {
             const user_id = localStorage.getItem('userId');
             const response = await axios.put(
@@ -39,19 +43,14 @@ const BlogUpdate: React.FC = () => {
                     title,
                     content,
                     description,
+                    cover_image: coverImage,
                 }
             );
             console.log(response.data);
+            navigate('/admin');
         } catch (error) {
             console.error(error);
-        }
-    };
-
-    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files && event.target.files.length > 0) {
-            const file = event.target.files[0];
-            setCoverImage(file); // Store the file
-            setImageName(file.name); // Set the file name for display
+            setError('Failed to update blog');
         }
     };
 
@@ -63,7 +62,8 @@ const BlogUpdate: React.FC = () => {
         <div className="h-screen w-full flex justify-center items-center">
             <div className="w-full max-w-2xl p-8 rounded-lg shadow-md">
                 <h2 className="text-6xl font-bold text-white mb-10 text-center">Update Blog Post</h2>
-                <form className="space-y-6">
+                {error && <p className="text-red-500 mb-4">{error}</p>}
+                <form className="space-y-6" onSubmit={handleUpdate}>
                     {/* Title Input */}
                     <TextField
                         label="Title"
@@ -120,8 +120,26 @@ const BlogUpdate: React.FC = () => {
                         }}
                     />
 
+                    {/* Cover Image URL */}
+                    <TextField
+                        label="Cover Image URL"
+                        value={coverImage}
+                        onChange={(e) => setCoverImage(e.target.value)}
+                        variant="outlined"
+                        fullWidth
+                        InputLabelProps={{ style: { color: 'white' } }}
+                        InputProps={{ style: { color: 'white', backgroundColor: 'black' } }}
+                        sx={{
+                            '& .MuiOutlinedInput-root': {
+                                '& fieldset': { borderColor: 'white' },
+                                '&:hover fieldset': { borderColor: 'gray' },
+                                '&.Mui-focused fieldset': { borderColor: 'white' },
+                            },
+                        }}
+                    />
+
                     {/* Update Button */}
-                    <Button variant="contained" color="warning" fullWidth onClick={handleUpdate}>
+                    <Button variant="contained" color="warning" fullWidth type="submit">
                         Update Blog Post
                     </Button>
                 </form>

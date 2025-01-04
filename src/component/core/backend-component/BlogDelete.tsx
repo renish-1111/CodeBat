@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Button, TextField } from '@mui/material';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const BlogDelete: React.FC = () => {
     const { blogId } = useParams();
+    const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [description, setDescription] = useState(''); // Added state for description
+    const [coverImage, setCoverImage] = useState("")
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -20,6 +22,7 @@ const BlogDelete: React.FC = () => {
                     setTitle(response.data.title || '');
                     setContent(response.data.content || '');
                     setDescription(response.data.description || ''); // Fetch and set description
+                    setCoverImage(response.data.cover_image || '');
                 }
                 setLoading(false);
             })
@@ -40,7 +43,7 @@ const BlogDelete: React.FC = () => {
                     },
                 }
             );
-            console.log(response.data);
+            navigate('/admin');
         } catch (error) {
             console.error('Error deleting blog:', error);
         }
@@ -111,6 +114,29 @@ const BlogDelete: React.FC = () => {
                         fullWidth
                         multiline
                         rows={4}
+                        disabled
+                        InputLabelProps={{ style: { color: 'white' } }}
+                        InputProps={{
+                            style: { color: 'white', backgroundColor: 'black' },
+                        }}
+                        sx={{
+                            '& .MuiOutlinedInput-root': {
+                                '& fieldset': { borderColor: 'white' },
+                                '&:hover fieldset': { borderColor: 'gray' },
+                                '&.Mui-focused fieldset': { borderColor: 'white' },
+                                '&.Mui-disabled fieldset': { borderColor: 'white' },
+                            },
+                            '& .MuiInputBase-input.Mui-disabled': {
+                                WebkitTextFillColor: 'white',
+                            },
+                        }}
+                    />
+
+                    <TextField
+                        label="Cover Image"
+                        value={coverImage}
+                        variant="outlined"
+                        fullWidth
                         disabled
                         InputLabelProps={{ style: { color: 'white' } }}
                         InputProps={{

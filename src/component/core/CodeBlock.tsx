@@ -9,7 +9,7 @@ const isMobileScreen = window.innerWidth < 767;
 
 const CodeBlock = ({ code, language}: CodeBlockInterface) => {
     return (
-        <div className=''>
+        <div className='mb-5'>
             <CopyBlock
                 text={code}
                 language={language}
