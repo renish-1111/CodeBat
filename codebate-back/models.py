@@ -23,9 +23,10 @@ class Blog(db.Model):
     
 class Language(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(200), nullable=False)
-    description = db.Column(db.Text) # No length limitation
-    cover_image = db.Column(db.Text)
+    name = db.Column(db.String(200), primary_key=True)
+    description = db.Column(db.Text , nullable=False) # No length limitation
+    cover_image = db.Column(db.Text,nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 class Tutorial(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -86,4 +87,36 @@ def delete_tutorial(tutorial_id, language_id, user_id):
     if tutorial:
         db.session.delete(tutorial)
         db.session.commit()
+
+def create_language(name, description, cover_image, user_id):
+    language = Language(name=name, description=description, cover_image=cover_image, user_id=user_id)
+    db.session.add(language)
+    db.session.commit()
+    
+def get_languages_by_name(name):
+    return Language.query.filter_by(name=name).first()
+
+def get_language_by_name_and_user(language_name, user_id):
+    return Language.query.filter_by(name=language_name, user_id=user_id).first()
+
+def get_languages_by_user(user_id):
+    return Language.query.filter_by(user_id=user_id).all()
+
+def get_language_by_id(language_id):
+    return Language.query.filter_by(id=language_id).first()
+    
+def update_language( user_id, name, description, cover_image):
+    language = Language.query.filter_by(user_id=user_id, name=name).first()
+    if language:
+        language.description = description
+        language.cover_image = cover_image
+        db.session.commit()
+
+
+def delete_language(langName, user_id):
+    language = Language.query.filter_by(name=langName, user_id=user_id).first()
+    if language:
+        db.session.delete(language)
+        db.session.commit()
+
 

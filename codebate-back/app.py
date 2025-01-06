@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 from flask_cors import CORS
 from flask_migrate import Migrate
-from models import db, init_app, get_user_by_email, create_user, get_blog_by_id_and_user, create_blog, update_blog, delete_blog, Blog
+from models import Language, create_language, get_language_by_name_and_user, update_language ,delete_language ,db, init_app, get_user_by_email, create_user, get_blog_by_id_and_user, create_blog, update_blog, delete_blog, Blog
 
 # Load environment variables
 load_dotenv()
@@ -61,28 +61,27 @@ def login():
     return jsonify({'message': 'Invalid email or password'}), 401
 
 # Create blog route
-@app.route('/admin/blogs', methods=['POST'])
-def create_blog_route():
-    data = request.get_json()
-    title, content, user_id = data.get('title'), data.get('content'), data.get('user_id')
-    description = data.get('description')
-    cover_image = data.get('cover_image')  # URL for cover image
+@app.route('/admin/blogs/', methods=['GET','POST'])
+def create_and_showAll_blog_route():
+    if request.method == 'GET':
+         user_id = request.args.get('user_id')
+         if not user_id:
+             return jsonify({'message': 'User ID is required'}), 400
+     
+         blogs = Blog.query.filter_by(user_id=user_id).all()
+         if not blogs:
+             return jsonify({'message': 'No blogs found'}), 500
+         return jsonify({'blogs': [{'id': blog.id, 'title': blog.title, 'content': blog.content, 'user_id': blog.user_id} for blog in blogs]}), 200
 
-    create_blog(title, content, user_id, description, cover_image)
-    
-    return jsonify({'message': 'Blog created successfully'}), 200
+    if request.method == 'POST':
+        data = request.get_json()
+        title, content, user_id = data.get('title'), data.get('content'), data.get('user_id')
+        description = data.get('description')
+        cover_image = data.get('cover_image')  # URL for cover image
 
-# Get all blogs route
-@app.route('/blogs/', methods=['GET'])
-def get_blogs():
-    user_id = request.args.get('user_id')
-    if not user_id:
-        return jsonify({'message': 'User ID is required'}), 400
-
-    blogs = Blog.query.filter_by(user_id=user_id).all()
-    if not blogs:
-        return jsonify({'message': 'No blogs found'}), 500
-    return jsonify({'blogs': [{'id': blog.id, 'title': blog.title, 'content': blog.content, 'user_id': blog.user_id} for blog in blogs]}), 200
+        create_blog(title, content, user_id, description, cover_image)
+        
+        return jsonify({'message': 'Blog created successfully'}), 200
 
 @app.route('/api/blogs/', methods=['GET', 'OPTIONS'])
 def get_blog_frontend():
@@ -150,6 +149,67 @@ def manage_blog(blog_id):
     if request.method == 'DELETE':
         delete_blog(blog_id, user_id)
         return jsonify({'message': 'Blog deleted successfully'}), 200
+    
+@app.route('/admin/languages/', methods=['GET'])
+def show_language():        
+    if request.method == 'GET':
+        user_id = request.args.get('user_id')
+        if not user_id:
+            return jsonify({'message': 'User ID is required'}), 400
+        language = request.args.get('langName[name]')
+        
+        print(language)
+        print(user_id)
+        
+        if language:
+            language = get_language_by_name_and_user(language, user_id)
+            return jsonify({'language': {'id': language.id, 'name': language.name, 'description': language.description, 'cover_image': language.cover_image}}), 200
+            
+        try:
+            languages = Language.query.all()
+            return jsonify({'languages': [{'id': lang.id, 'name': lang.name} for lang in languages]}), 200
+        except Exception as e:
+            return jsonify({'message': 'Failed to fetch languages', 'error': str(e)}), 500
 
+@app.route('/admin/languages', methods=['POST','PUT','DELETE'])
+def add_language():
+    if request.method == 'POST':
+        data = request.get_json()
+        name, description, user_id = data.get('name'), data.get('description'), data.get('user_id')
+        cover_image = data.get('cover_image')
+        if not all([name, description, user_id, cover_image]):
+            return jsonify({'message': 'All fields are required'}), 400
+        create_language(name, description,cover_image, user_id)
+        return jsonify({'message': 'Language created successfully'}), 200
+    
+    if request.method == 'PUT':
+        data = request.get_json()
+        user_id = data.get('user_id')
+        name = data.get('name')
+        description = data.get('description')
+        cover_image = data.get('cover_image')
+
+        if not user_id:
+            return jsonify({'message': 'User ID is required'}), 400
+        if not name:
+            return jsonify({'message': 'Name is required'}), 400
+       
+        update_language(user_id, name, description, cover_image)
+
+        return jsonify({'message': 'Language updated successfully'}), 200
+        
+    if request.method == 'DELETE':
+        langName = request.args.get('langName')
+        user_id = request.args.get('user_id')
+        print(langName)
+        print(user_id)
+        if not langName:
+            return jsonify({'message': 'Language name is required'}), 400
+        if not user_id:
+            return jsonify({'message': 'User ID is required'}), 400
+        delete_language(langName, user_id)
+        return jsonify({'message': 'Language deleted successfully'}), 200
+       
+    
 if __name__ == '__main__':
     app.run(debug=True)

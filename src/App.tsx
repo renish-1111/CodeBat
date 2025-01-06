@@ -13,6 +13,10 @@ import BlogUpdate from './component/core/backend-component/BlogUpdate';
 import BlogDelete from './component/core/backend-component/BlogDelete';
 import BlogCreate from './component/core/backend-component/BlogCreate';
 import BlogContent from './component/BlogContent';
+import  Language from './component/core/backend-component/Language';
+import AddLanguage from './component/core/backend-component/AddLanguage';
+import EditLanguage from './component/core/backend-component/EditLanguage';
+import DeleteLanguage from './component/core/backend-component/DeleteLanguage';
 
 // Lazy loading components
 const Home = lazy(() => import('./component/Home'));
@@ -58,21 +62,45 @@ function App() {
           }
           />
          
-          <Route path="/blogUpdate/:blogId" element={
+          <Route path="/admin/blogUpdate/:blogId" element={
             <ProtectedRoute>
               <BlogUpdate />
             </ProtectedRoute>
           }
           />
-          <Route path="/blogDelete/:blogId" element={
+          <Route path="/admin/blogDelete/:blogId" element={
             <ProtectedRoute>
               <BlogDelete />
             </ProtectedRoute>
           }
           />
-          <Route path="/blogCreate" element={
+          <Route path="/admin/blogCreate" element={
             <ProtectedRoute>
               <BlogCreate />
+            </ProtectedRoute>
+          }
+          />
+          <Route path="/admin/languages" element={
+            <ProtectedRoute>
+              <Language />
+            </ProtectedRoute>
+          }
+          />
+          <Route path="/admin/addLanguage" element={
+            <ProtectedRoute>
+              <AddLanguage />
+            </ProtectedRoute>
+          }
+          />
+          <Route path="/admin/editLanguage/:name" element={
+            <ProtectedRoute>
+              <EditLanguage />
+            </ProtectedRoute>
+          }
+          />
+          <Route path="/admin/deleteLanguage/:name" element={
+            <ProtectedRoute>
+              <DeleteLanguage />
             </ProtectedRoute>
           }
           />

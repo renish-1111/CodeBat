@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 import ContentRenderer from './core/ContentRenderer';
 import { Description } from '@mui/icons-material';
+import BlogSkeleton from './core/Skeleton/BlogSkeletol';
 
 interface BlogPost {
   title: string;
@@ -54,11 +55,7 @@ const BlogContent: React.FC = () => {
 
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <p className="text-lg text-white">Loading...</p>
-      </div>
-    );
+    return <BlogSkeleton />;
   }
 
   if (error) {
