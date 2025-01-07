@@ -3,7 +3,6 @@ import Navbar from './core/Navbar';
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 import ContentRenderer from './core/ContentRenderer';
-import { Description } from '@mui/icons-material';
 import BlogSkeleton from './core/Skeleton/BlogSkeletol';
 
 interface BlogPost {
@@ -75,10 +74,10 @@ const BlogContent: React.FC = () => {
             <div className="gap-3 grid w-full lg:flex-row lg:w-2/3">
               <img
                 src={blog?.cover_image} // Replace with blog.cover_image
-                className="mx-auto rounded-lg w-11/12 mb-5"
+                className="mx-auto rounded-lg w-11/12 md:w-11/12 mb-5"
               />
 
-              <div className="px-5 md:px-10">
+              <div className="mx-5 md:mx-10 w-11/12">
                 <ContentRenderer content={blog?.content || ''} />
               </div>
             </div>

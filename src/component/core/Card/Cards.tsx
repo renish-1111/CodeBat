@@ -9,8 +9,8 @@ import { useEffect, useState } from 'react';
 
 interface CardProps {
   title: string;
-  image: string;
-  link:string;
+  description: string;
+  cover_image: string;
 }
 
 // Use the CardProps interface as the type for the props parameter
@@ -28,20 +28,20 @@ export default function Cards(props: CardProps) {
   }
 
   return (
-    <Link to={props.link}>
+    <Link to={'/tutorial/' + props.title}>
       <Card sx={{ minHeight: 350 , minWidth:300 , bgcolor:"#121212"}}>
         <CardActionArea>
           <CardMedia
             component="img"
             style={{ objectFit: 'cover' }}
-            image={props.image}
+            image={props.cover_image}
             alt="error"
             sx={{ minHeight: 300, padding:"12px" , bgcolor:"#121212"}}
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div" >
               <div className='flex justify-center text-white'>
-              {props.title}
+              {props.description}
               </div>
             </Typography>
           </CardContent>

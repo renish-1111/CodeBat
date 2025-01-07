@@ -104,7 +104,7 @@ const ContentRenderer: React.FC<ContentRendererProps> = ({ content }) => {
           codeLanguage = line.replace('```', '').trim();
         } else {
           elements.push(
-            <div className="my-6 md:my-12" key={index}>
+            <div className="my-3 md:my-12" key={index}>
               <CodeBlock code={codeContent.join('\n')} language={codeLanguage} />
             </div>
           );

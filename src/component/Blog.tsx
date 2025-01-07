@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
 import Navbar from "./core/Navbar";
-import recentBlog from "../../config/recentBlog";
-import blogDetail from "../../config/blogDetail.ts";
 import BlogCards from './core/Card/BlogCards.tsx';
 import { useEffect, useState } from "react";
 import axios from "axios";
+import BlogCardsSkeleton from "./core/Skeleton/BlogCardsSkeleton.tsx";
 
 interface BlogPost {
     title: string;
@@ -16,13 +15,14 @@ interface BlogPost {
 const Blog = () => {
 
     const [blog, setBlogs] = useState<BlogPost[]>([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
 
     const getBlogs = async () => {
         try {
             const response = await axios.get(`http://localhost:5000/api/blogs`);
             setBlogs(response.data.blogs);
+            setLoading(false);
         } catch (error) {
             console.error(error);
             setError('Failed to load blogs');
@@ -41,6 +41,7 @@ const Blog = () => {
             <div className="py-20 w-full flex justify-center">
                 <div className="mx-5 lg:mx-auto mt-5 lg:w-8/12">
                     <div className="grid md:grid-cols-2 gap-5 ">
+                        {loading && <BlogCardsSkeleton />}
                         {blog && blog.map((blog: BlogPost, index) => (
                             <BlogCards
                                 key={index}

@@ -93,6 +93,11 @@ def create_language(name, description, cover_image, user_id):
     db.session.add(language)
     db.session.commit()
     
+def get_languages():
+    # only cover_image and name , description
+    languages = Language.query.all()
+    return [{'id': lang.id, 'title': lang.name, 'description': lang.description, 'cover_image': lang.cover_image} for lang in languages]
+    
 def get_languages_by_name(name):
     return Language.query.filter_by(name=name).first()
 

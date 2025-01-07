@@ -114,6 +114,7 @@ function App() {
 
 
           <Route path="/tutorial" element={<Tutorial />} />
+          <Route path="/tutorial/:name" element={<C />} />
           <Route path="/tutorial/c" element={<C />} />
           <Route path="/tutorial/c/introduction" element={<Introduction />} />
           <Route path="/tutorial/c/setup" element={<Setup />} />

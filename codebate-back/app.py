@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 from flask_cors import CORS
 from flask_migrate import Migrate
-from models import Language, create_language, get_language_by_name_and_user, update_language ,delete_language ,db, init_app, get_user_by_email, create_user, get_blog_by_id_and_user, create_blog, update_blog, delete_blog, Blog
+from models import Language, create_language, get_language_by_name_and_user, get_languages, update_language ,delete_language ,db, init_app, get_user_by_email, create_user, get_blog_by_id_and_user, create_blog, update_blog, delete_blog, Blog
 
 # Load environment variables
 load_dotenv()
@@ -210,6 +210,12 @@ def add_language():
         delete_language(langName, user_id)
         return jsonify({'message': 'Language deleted successfully'}), 200
        
-    
+@app.route('/api/languages', methods=['GET'])
+def get_languages_frontend():
+    languages = get_languages()
+    if not languages:
+        return jsonify({'message': 'No languages found'}), 500
+    return jsonify({'languages': [{'title': lang['title'], 'description': lang['description'], 'cover_image': lang['cover_image']} for lang in languages]}), 200
+        
 if __name__ == '__main__':
     app.run(debug=True)
