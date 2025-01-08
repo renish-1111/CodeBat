@@ -19,24 +19,26 @@ class Blog(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     cover_image = db.Column(db.String(200))  # URL for cover image
     description = db.Column(db.Text)  # No length limitation
-    user = db.relationship('User', backref=db.backref('blogs', lazy=True))
+    user = db.relationship('User', backref=db.backref('blog', lazy=True))
     
 class Language(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(200), primary_key=True)
-    description = db.Column(db.Text , nullable=False) # No length limitation
-    cover_image = db.Column(db.Text,nullable=False)
+    id = db.Column(db.Integer, primary_key=True)  # Primary key
+    name = db.Column(db.String(200), unique=True, index=True, nullable=False)  # Make name unique and indexed
+    description = db.Column(db.Text, nullable=False)
+    cover_image = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', backref=db.backref('languages', lazy=True))
+
 
 class Tutorial(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
-    description = db.Column(db.Text)  # No length limitation
     content = db.Column(db.Text, nullable=False)
-    language_id = db.Column(db.Integer, db.ForeignKey('language.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    language_name = db.Column(db.String(200), db.ForeignKey('language.name'), nullable=False)  # Foreign Key referencing Language name
     language = db.relationship('Language', backref=db.backref('tutorials', lazy=True))
     user = db.relationship('User', backref=db.backref('tutorials', lazy=True))
+
 
 def get_user_by_email(email):
     return User.query.filter_by(email=email).first()
