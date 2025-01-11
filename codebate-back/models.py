@@ -32,6 +32,7 @@ class Language(db.Model):
 
 class Tutorial(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    index = db.Column(db.Integer, nullable=False)
     title = db.Column(db.String(200), nullable=False)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
@@ -119,11 +120,58 @@ def update_language( user_id, name, description, cover_image):
         language.cover_image = cover_image
         db.session.commit()
 
-
 def delete_language(langName, user_id):
     language = Language.query.filter_by(name=langName, user_id=user_id).first()
     if language:
         db.session.delete(language)
         db.session.commit()
-
-
+        
+def create_tutorial(user_id, title, content, language):
+    
+    max_index = db.session.query(db.func.max(Tutorial.index)).filter_by(language_name=language).scalar()
+    index = (max_index + 1) if max_index is not None else 1
+    
+    tutorial = Tutorial(
+        user_id=user_id,
+        title=title,
+        content=content,
+        language_name=language,
+        index=index
+    )
+    # Add the new tutorial and commit changes
+    db.session.add(tutorial)
+    db.session.commit()
+    
+def update_tutorial(id, user_id, title, content, language, index):
+    # Get the tutorial by ID
+    tutorial = Tutorial.query.filter_by(id=id, user_id=user_id).first()
+    index = int(index)
+    if tutorial:
+        if tutorial.index != index:
+            max_index = db.session.query(db.func.max(Tutorial.index)).filter_by(language_name=language).scalar()
+            if index > max_index:
+                index = max_index + 1
+            elif tutorial.index < index:
+                Tutorial.query.filter_by(language_name=language).filter(Tutorial.index > tutorial.index, Tutorial.index <= index).update({
+                    Tutorial.index: Tutorial.index - 1
+                })
+            else:
+                Tutorial.query.filter_by(language_name=language).filter(Tutorial.index < tutorial.index, Tutorial.index >= index).update({
+                    Tutorial.index: Tutorial.index + 1
+                })
+        tutorial.title = title
+        tutorial.content = content
+        tutorial.language_name = language
+        tutorial.index = index
+        db.session.commit()
+    
+def delete_tutorial(id, user_id, language):
+    # Get the tutorial by ID
+    tutorial = Tutorial.query.filter_by(id=id, user_id=user_id).first()
+    delete_tutotial_index = tutorial.index
+    db.session.delete(tutorial)
+    db.session.commit()
+    Tutorial.query.filter_by(language_name=language).filter(Tutorial.index > delete_tutotial_index).update({
+        Tutorial.index: Tutorial.index - 1
+    })
+    db.session.commit()

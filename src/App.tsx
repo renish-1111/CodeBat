@@ -17,6 +17,12 @@ import  Language from './component/core/backend-component/Language';
 import AddLanguage from './component/core/backend-component/AddLanguage';
 import EditLanguage from './component/core/backend-component/EditLanguage';
 import DeleteLanguage from './component/core/backend-component/DeleteLanguage';
+import  TutorialPanel from './component/core/backend-component/Tutorial';
+import AddTutorial from './component/core/backend-component/AddTutorial';
+import DeleteTutorial from './component/core/backend-component/DeleteTutorial';
+import EditTutorial  from './component/core/backend-component/EditTutorial';
+import C from './tutorial/C';
+import GetStart from './component/core/GetStart';
 
 // Lazy loading components
 const Home = lazy(() => import('./component/Home'));
@@ -24,7 +30,6 @@ const Login = lazy(() => import('./component/core/backend-component/Login'));
 const Signup = lazy(() => import('./component/core/backend-component/Signup'));
 const Admin = lazy(() => import('./component/core/backend-component/Admin'));
 const Tutorial = lazy(() => import('./component/Tutorial'));
-const C = lazy(() => import('./tutorial/C/C'));
 const Java = lazy(() => import('./tutorial/Java'));
 const About = lazy(() => import('./component/About'));
 const Blog = lazy(() => import('./component/Blog'));
@@ -104,6 +109,30 @@ function App() {
             </ProtectedRoute>
           }
           />
+          <Route path="/admin/tutorials" element={
+            <ProtectedRoute>
+              <TutorialPanel />
+            </ProtectedRoute>
+          }
+          />
+          <Route path="/admin/addTutorial" element={
+            <ProtectedRoute>
+              <AddTutorial />
+            </ProtectedRoute>
+          }
+          />
+          <Route path="/admin/editTutorial/:id" element={
+            <ProtectedRoute>
+              <EditTutorial />
+            </ProtectedRoute>
+          }
+          />
+          <Route path="/admin/deleteTutorial/:id" element={
+            <ProtectedRoute>
+              <DeleteTutorial />
+            </ProtectedRoute>
+          }
+          />
 
          
           <Route path="/about" element={<About />} />
@@ -114,8 +143,7 @@ function App() {
 
 
           <Route path="/tutorial" element={<Tutorial />} />
-          <Route path="/tutorial/:name" element={<C />} />
-          <Route path="/tutorial/c" element={<C />} />
+          <Route path="/tutorial/:name" element={<GetStart />} />
           <Route path="/tutorial/c/introduction" element={<Introduction />} />
           <Route path="/tutorial/c/setup" element={<Setup />} />
           <Route path="/tutorial/java" element={<Java />} />

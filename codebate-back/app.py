@@ -6,7 +6,7 @@ from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 from flask_cors import CORS
 from flask_migrate import Migrate
-from models import Language, create_language, get_language_by_name_and_user, get_languages, update_language ,delete_language ,db, init_app, get_user_by_email, create_user, get_blog_by_id_and_user, create_blog, update_blog, delete_blog, Blog
+from models import Language, Tutorial, create_language, create_tutorial, delete_tutorial, get_language_by_name_and_user, get_languages, update_language ,delete_language ,db, init_app, get_user_by_email, create_user, get_blog_by_id_and_user, create_blog, update_blog, delete_blog, Blog, update_tutorial
 
 # Load environment variables
 load_dotenv()
@@ -172,7 +172,7 @@ def show_language():
             return jsonify({'message': 'Failed to fetch languages', 'error': str(e)}), 500
 
 @app.route('/admin/languages', methods=['POST','PUT','DELETE'])
-def add_language():
+def manage_language():
     if request.method == 'POST':
         data = request.get_json()
         name, description, user_id = data.get('name'), data.get('description'), data.get('user_id')
@@ -212,10 +212,102 @@ def add_language():
        
 @app.route('/api/languages', methods=['GET'])
 def get_languages_frontend():
-    languages = get_languages()
-    if not languages:
-        return jsonify({'message': 'No languages found'}), 500
-    return jsonify({'languages': [{'title': lang['title'], 'description': lang['description'], 'cover_image': lang['cover_image']} for lang in languages]}), 200
+    language = request.args.get('language[name]')
+    if language:
+        language_detail = Language.query.filter_by(name=language).first()
+        if language_detail:
+            # Serialize the language detail
+            return jsonify({
+                'description': language_detail.description,  # Replace 'description' with the correct attribute
+                'name': language_detail.name                # Add other fields if necessary
+            })
+        else:
+            return jsonify({'message': 'Language not found'}), 404
+
+    else:
+        languages = get_languages()
+        if not languages:
+            return jsonify({'message': 'No languages found'}), 500
+        return jsonify({'languages': [{'title': lang['title'], 'description': lang['description'], 'cover_image': lang['cover_image']} for lang in languages]}), 200
+
+
         
+@app.route('/admin/tutorial/', methods=['GET'])
+def get_tutorials():
+    if request.method == 'GET':
+        user_id = request.args.get('user_id')
+        if not user_id:
+            return jsonify({'message': 'User ID is required'}), 400
+        
+        tutorial_id = request.args.get('tutorialId')
+        
+        if tutorial_id:
+            tutorial = Tutorial.query.filter_by(id=tutorial_id, user_id=user_id).first()
+            if not tutorial:
+                return jsonify({'message': 'Tutorial not found'}), 500
+            return jsonify({'tutorial': {'id': tutorial.id, 'title': tutorial.title, 'content': tutorial.content, 'language': tutorial.language_name, 'user_id': tutorial.user_id, 'index':tutorial.index}}), 200
+        
+        tutorials = Tutorial.query.filter_by(user_id=user_id).all()
+        if not tutorials:
+            return jsonify({'message': 'No tutorials found'}), 500
+        return jsonify({'tutorials': [{'id': tutorial.id, 'title': tutorial.title,'language': tutorial.language_name,'index':tutorial.index} for tutorial in tutorials]}), 200
+    
+@app.route('/admin/tutorial',methods=['POST','PUT','DELETE','OPTIONS'])
+def manage_tutorial():
+    if request.method == 'OPTIONS':
+        response = make_response()
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        return response, 200
+    
+    if request.method == 'POST':
+        data = request.get_json()
+        user_id = data.get('user_id')
+        title = data.get('title')
+        content = data.get('content')
+        language = data.get('language')
+        if not all([user_id, title, user_id, content,language]):
+            return jsonify({'message': 'All fields are required'}), 400
+        create_tutorial(user_id,title,content,language)
+    
+        return jsonify({'message': 'Tutorial created successfully'}), 200
+    
+    if request.method == 'PUT':
+        data = request.get_json()
+        id = data.get('tutorialId')
+        user_id = data.get('user_id')
+        title = data.get('title')
+        content = data.get('content')
+        language = data.get('language')
+        index = data.get('index')
+        if not all([id, user_id, title, content, language, index]):
+            return jsonify({'message': 'All fields are required'}), 400
+        update_tutorial(id, user_id, title, content, language, index)
+        return jsonify({'message': 'Tutorial updated successfully'}), 200
+        
+    if request.method == 'DELETE':
+        data = request.get_json()
+        tutorial_id = data.get('tutorialId')
+        user_id = data.get('user_id')
+        language = data.get('language')
+        index = data.get('index')
+        if not all([tutorial_id, user_id]):
+            return jsonify({'message': 'All fields are required'}), 400
+        delete_tutorial(tutorial_id, user_id, language)
+        return jsonify({'message': 'Tutorial deleted successfully'}), 200
+
+@app.route('/api/tutorials/', methods=['GET'])
+def get_tutorials_frontend():
+    language = request.args.get('language[name]')
+    tutorials = Tutorial.query.filter_by(language_name = language).all()
+    if not tutorials:
+        return jsonify({'message': 'No tutorials found'}), 500
+    return jsonify({'tutorials': [{'id': tutorial.id, 'title': tutorial.title, 'content': tutorial.content, 'language': tutorial.language_name, 'index':tutorial.index} for tutorial in tutorials]}), 200
+
+
+
+
+    
 if __name__ == '__main__':
     app.run(debug=True)

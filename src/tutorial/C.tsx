@@ -1,11 +1,39 @@
-import Navbar from '../../component/core/Navbar';
-import Sidebar from '../../component/core/Sidebar';
-import CSidebar from '../../../config/CSidebar';
-import Animation from '../../component/Animation';
-import { Link } from 'react-router-dom';
+import Navbar from '../component/core/Navbar';
+import Sidebar from '../component/core/Sidebar';
+import Animation from '../component/Animation';
+import { Link, useParams } from 'react-router-dom';
 import { Button } from '@mui/material';
+import axios from 'axios';
+import { useEffect } from 'react';
+
+interface CSidebar {
+    title: string;
+    index: string;
+}
 
 const C = () => {
+    const language = useParams();
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const response = await axios.get(`http://localhost:5000/admin/tutorial`, {
+              
+            });
+            console.log(response.data);
+    
+            setTitle(response.data.tutorial.title);
+            setContent(response.data.tutorial.content);
+            setLanguage(response.data.tutorial.language);
+            setIndex(response.data.tutorial.index);
+          } catch (err) {
+            console.error('Failed to fetch tutorial:', err);
+            setError('Failed to fetch tutorial data');
+          }
+        };
+        fetchData();
+      }, []);
+
+
     return (
         <div className='bg-main-bg'>
             <Navbar component={<Sidebar sideOption={CSidebar} />} />

@@ -3,52 +3,69 @@ import { useState } from 'react';
 import { Box, Button, Drawer, ListItem, ListItemText, Toolbar } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-interface Props {
-    sideOption: {text: string, link: string}[];
+interface SidebarProps {
+    sideOption: {
+        title: string;
+        index: string;
+        language: string;
+    }[];
 }
 
-const Sidebar = (props:Props) => {
+const Sidebar = ({ sideOption = [] }: SidebarProps) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
-
+    console.log(sideOption);
+    
     return (
-        <Box sx={{ display: 'flex'}}>
-
-            <Button sx={{ bgcolor: '#fff', color: '#000',maxHeight:50,maxWidth:5,'&:hover': { bgcolor: '#000', color: '#fff'} }} variant="contained" onClick={toggleSidebar}>
+        <Box sx={{ display: 'flex' }}>
+            <Button
+                sx={{
+                    bgcolor: '#fff',
+                    color: '#000',
+                    maxHeight: 50,
+                    '&:hover': { bgcolor: '#000', color: '#fff' },
+                }}
+                variant="contained"
+                onClick={toggleSidebar}
+            >
                 <MenuIcon />
             </Button>
 
             <Drawer
-                anchor="left" 
+                anchor="left"
                 open={isSidebarOpen}
                 onClose={toggleSidebar}
                 sx={{
                     '& .MuiDrawer-paper': {
                         boxSizing: 'border-box',
                         width: 240,
-                        bgcolor: "#000",
-                        color: "#fff",
-                        top: 40,
-                        
+                        bgcolor: '#000',
+                        color: '#fff',
                     },
                 }}
             >
                 <Toolbar />
-                <Box sx={{ overflow: 'none' }}>
-                    {props.sideOption.map((item, index:number) => {
-                        if (item.link) {
-                            return (
-                                <Link key={index} to={item.link}>
-                                    <ListItem button>
-                                        <ListItemText primary={item.text} />
-                                    </ListItem>
-                                </Link>
-                            );
-                        }
-                    })}
+                <Box sx={{ overflow: 'auto' }}>
+                    {sideOption.length > 0 ? (
+                        sideOption.map((option) => (
+                            <Link
+                                key={option.index}
+                                to={`/tutorial/${option.language}/${option.index}`}
+                                style={{ textDecoration: 'none', color: 'inherit' }}
+                            >
+                                <ListItem button>
+                                    <ListItemText primary={option.title} />
+                                </ListItem>
+                            </Link>
+                        ))
+                    ) : (
+                        <ListItem>
+                            <ListItemText primary="No options available" />
+                        </ListItem>
+                    )}
                 </Box>
             </Drawer>
         </Box>
