@@ -15,7 +15,7 @@ const BlogDelete: React.FC = () => {
     useEffect(() => {
         const userId = localStorage.getItem('userId');
         axios
-            .get(`http://localhost:5000/admin/blogs/${blogId}?user_id=${userId}`)
+            .get(`/api/admin/blogs/${blogId}?user_id=${userId}`)
             .then((response) => {
                 if (response.data) {
                     console.log(response.data);
@@ -36,13 +36,14 @@ const BlogDelete: React.FC = () => {
         const userId = localStorage.getItem('userId');
         try {
             const response = await axios.delete(
-                `http://localhost:5000/admin/blogs/${blogId}/?user_id=${userId}`,
+                `/api/admin/blogs/${blogId}/?user_id=${userId}`,
                 {
                     headers: {
                         'Content-Type': 'application/json',
                     },
                 }
             );
+            console.log(response.data);
             navigate('/admin');
         } catch (error) {
             console.error('Error deleting blog:', error);

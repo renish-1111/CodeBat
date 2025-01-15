@@ -29,7 +29,7 @@ const Admin = () => {
     setError('');
     try {
       const userId = localStorage.getItem('userId');
-      const response = await axios.get(`http://localhost:5000/admin/blogs?user_id=${userId}`);
+      const response = await axios.get(`/api/admin/blogs?user_id=${userId}`);
       console.log(response.data.blogs);
       setBlogs(response.data.blogs);
     } catch (error) {

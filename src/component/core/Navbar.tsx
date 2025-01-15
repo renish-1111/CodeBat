@@ -23,6 +23,7 @@ function Navbar(props: NavbarProps) {
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
+
   };
 
   const handleCloseNavMenu = () => {

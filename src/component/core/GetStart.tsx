@@ -8,12 +8,13 @@ import Animation from '../Animation';
 
 interface Tutorial {
     title: string;
-    index: string;
+    index: number;
     language: string;
 }
 
 const GetStart = () => {
-    const name = useParams<{ language: string }>();
+    const { name } = useParams<{ name: string }>();
+    const language = name;
     const [error, setError] = useState<string>('');
     const [data, setData] = useState<Tutorial[]>([]);
     const [description, setDescription] = useState<string>('');
@@ -22,11 +23,11 @@ const GetStart = () => {
         const fetchData = async () => {
             try {
                 const [tutorialResponse, languageResponse] = await Promise.all([
-                    axios.get('http://localhost:5000/api/tutorials', {
-                        params: { language: name },
+                    axios.get('/api/tutorials', {
+                        params: { language },
                     }),
-                    axios.get('http://localhost:5000/api/languages', {
-                        params: { language: name },
+                    axios.get('/api/languages', {
+                        params: { language },
                     }),
                 ]);
 
@@ -38,7 +39,7 @@ const GetStart = () => {
             }
         };
         fetchData();
-    }, [name]);
+    }, [language]);
 
     return (
         <div className="bg-main-bg">
@@ -53,7 +54,7 @@ const GetStart = () => {
                 </div>
                 {error && <p className="text-red-500 mt-4">{error}</p>}
                 <div className="text-center p-1 rounded-md bg-white hover:bg-black font-serif mt-8">
-                    <Link to="/tutorial/c/1" className="font-semibold mx-auto">
+                    <Link to={`/tutorial/${language}/1`} className="font-semibold mx-auto">
                         <Button
                             variant="contained"
                             color="info"

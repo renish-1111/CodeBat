@@ -17,7 +17,7 @@ const EditTutorial: React.FC = () => {
   useEffect(() => {
     const fetchTutorial = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/admin/tutorial`, {
+        const response = await axios.get(`/api/admin/tutorial`, {
           params: {
             tutorialId,
             user_id: localStorage.getItem('userId'),
@@ -45,7 +45,7 @@ const EditTutorial: React.FC = () => {
     }
     setLoading(true);
     try {
-      const response = await axios.put(`http://localhost:5000/admin/tutorial`, {
+      const response = await axios.put(`/api/admin/tutorial`, {
         title,
         content,
         index,
@@ -88,7 +88,7 @@ const EditTutorial: React.FC = () => {
             }}
           />
           <TextField
-            label="Description"
+            label="Content"
             value={content}
             onChange={(e) => setContent(e.target.value)}
             variant="outlined"

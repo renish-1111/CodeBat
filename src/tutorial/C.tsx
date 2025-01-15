@@ -16,7 +16,7 @@ const C = () => {
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await axios.get(`http://localhost:5000/admin/tutorial`, {
+            const response = await axios.get(`/api/admin/tutorial`, {
               
             });
             console.log(response.data);

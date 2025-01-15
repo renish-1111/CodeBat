@@ -16,7 +16,7 @@ const Tutorial = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/languages')
+    axios.get('/api/languages')
       .then(res => {
         setLanguages(res.data.languages)
         setLoading(false)

@@ -10,24 +10,20 @@ const DeleteLanguage: React.FC = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [loading, setLoading] = useState(false);
-    const langName = useParams()           // Language ID fro  
+    const langName = useParams(); // Language ID 
     const navigate = useNavigate();
 
     useEffect(() => {
         // Fetch existing language details by ID
         const fetchLanguage = async () => {
             try {
-
-                const response = await axios.get(`http://localhost:5000/admin/languages`, {
+                const response = await axios.get(`/api/admin/languages`, {
                     params: {
                         langName: langName,
                         user_id: localStorage.getItem('userId'),
                     },
                 });
                 const { name, description, cover_image } = response.data.language;
-                console.log(response.data);
-                console.log(response.data.language.name, description, cover_image);
-
                 setLanguageName(name);
                 setDescription(description);
                 setCoverImage(cover_image);
@@ -39,31 +35,36 @@ const DeleteLanguage: React.FC = () => {
         fetchLanguage();
     }, [langName]);
 
-    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        if (!languageName.trim() || !description.trim() || !coverImage.trim()) {
-            setError('All fields are required');
-            return;
+    const handleDelete = async () => {
+        if (!window.confirm(`Are you sure you want to delete the language "${languageName}"?`)) {
+            return; // Exit if the user cancels
         }
+
         setLoading(true);
         try {
-            const response = await axios.delete(`http://localhost:5000/admin/languages`, {
+            await axios.delete(`/api/admin/languages`, {
                 params: {
                     langName: languageName,
                     user_id: localStorage.getItem('userId'),
                 },
             });
-            console.log(response.data);
-            setSuccess('Language updated successfully');
-
+            setSuccess('Language deleted successfully');
             setTimeout(() => navigate('/admin/languages'), 2000); // Navigate after success
         } catch (err) {
-            setError('Failed to update language');
+            setError('Failed to delete language');
             console.error(err);
         } finally {
             setLoading(false);
         }
     };
+
+    const handleBack = () => {
+        const confirmed = window.confirm('Are you sure you want to go back? Unsaved changes will be lost.');
+        if (confirmed) {
+            navigate('/admin/languages');
+        }
+    };
+
 
     return (
         <div className="h-screen w-full flex justify-center items-center">
@@ -71,16 +72,15 @@ const DeleteLanguage: React.FC = () => {
                 <h2 className="text-6xl font-bold text-white m-10 text-center pb-10">Delete Language</h2>
                 {error && <p className="text-red-500 mb-4">{error}</p>}
                 {success && <p className="text-green-500 mb-4">{success}</p>}
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form className="space-y-6">
                     {/* Language Name Input */}
                     <TextField
                         label="Language Name"
                         value={languageName}
-                        onChange={(e) => setLanguageName(e.target.value)}
                         variant="outlined"
                         fullWidth
-                        disabled // This ensures the field is non-editable
-                        InputLabelProps={{ style: { color: 'white' } }} // Label styling
+                        disabled
+                        InputLabelProps={{ style: { color: 'white' } }}
                         InputProps={{
                             style: { color: 'white', backgroundColor: 'black' },
                         }}
@@ -97,16 +97,15 @@ const DeleteLanguage: React.FC = () => {
                         }}
                     />
 
-
                     {/* Description Input */}
                     <TextField
                         label="Description"
                         value={description}
-                        onChange={(e) => setDescription(e.target.value)}
                         variant="outlined"
                         fullWidth
                         multiline
                         rows={4}
+                        disabled
                         InputLabelProps={{ style: { color: 'white' } }}
                         InputProps={{
                             style: { color: 'white', backgroundColor: 'black' },
@@ -128,9 +127,9 @@ const DeleteLanguage: React.FC = () => {
                     <TextField
                         label="Cover Image URL"
                         value={coverImage}
-                        onChange={(e) => setCoverImage(e.target.value)}
                         variant="outlined"
                         fullWidth
+                        disabled
                         InputLabelProps={{ style: { color: 'white' } }}
                         InputProps={{
                             style: { color: 'white', backgroundColor: 'black' },
@@ -149,8 +148,27 @@ const DeleteLanguage: React.FC = () => {
                     />
 
                     {/* Submit Button */}
-                    <Button variant="contained" color="success" fullWidth type="submit" disabled={loading}>
+                    <Button
+                        variant="contained"
+                        style={{ backgroundColor: 'red', color: 'white' }}
+                        fullWidth
+                        type="submit"
+                        onClick={handleDelete}
+                        disabled={loading}
+                    >
                         {loading ? 'Deleting...' : 'Delete Language'}
+
+                    </Button>
+
+                    {/* Back Button */}
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        fullWidth
+                        onClick={handleBack}
+                        disabled={loading}
+                    >
+                        Back to Languages
                     </Button>
                 </form>
             </div>

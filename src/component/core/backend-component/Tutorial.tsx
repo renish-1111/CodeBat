@@ -41,7 +41,7 @@ const TutorialPanel = () => {
     const user_id = localStorage.getItem('userId');
     setLoadingAction(true);
     try {
-      const response = await axios.get(`http://localhost:5000/admin/tutorial/?user_id=${user_id}`);
+      const response = await axios.get(`/api/admin/tutorial/?user_id=${user_id}`);
       console.log('Tutorials:', response.data.tutorials);
       setTutorials(response.data.tutorials || []); // Ensure array assignment
     } catch (err) {

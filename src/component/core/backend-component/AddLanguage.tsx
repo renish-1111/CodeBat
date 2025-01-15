@@ -21,7 +21,7 @@ const AddLanguage: React.FC = () => {
     setLoading(true);
     const userId = localStorage.getItem('userId');
     try {
-      const response = await axios.post('http://localhost:5000/admin/languages', {
+      const response = await axios.post('/api/admin/languages', {
         name: languageName,
         description: description,
         cover_image: coverImage,
@@ -38,8 +38,6 @@ const AddLanguage: React.FC = () => {
       setLoading(false);
     }
   };
-
- 
 
   return (
     <div className="h-screen w-full flex justify-center items-center">
@@ -105,8 +103,18 @@ const AddLanguage: React.FC = () => {
           />
 
           {/* Submit Button */}
-          <Button variant="contained" color="success" fullWidth type="submit" disabled={loading}>
+          <Button variant="contained" color="primary" fullWidth type="submit" disabled={loading}>
             {loading ? 'Adding...' : 'Add Language'}
+          </Button>
+
+          {/* Back Button */}
+          <Button
+            variant="outlined"
+            color="secondary"
+            fullWidth
+            onClick={() => navigate('/admin/languages')}
+          >
+            Back
           </Button>
         </form>
       </div>

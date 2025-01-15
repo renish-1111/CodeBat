@@ -33,7 +33,7 @@ const BlogCreate: React.FC = () => {
     if (userId) {
       setLoading(true);
       try {
-        const response = await axios.post('http://localhost:5000/admin/blogs', {
+        const response = await axios.post('/api/admin/blogs', {
           title,
           content,
           description,

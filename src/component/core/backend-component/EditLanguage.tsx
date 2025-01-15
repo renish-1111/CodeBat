@@ -10,23 +10,20 @@ const EditLanguage: React.FC = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [loading, setLoading] = useState(false);
-    const langName = useParams()            // Language ID fro  
+    const langName = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
         // Fetch existing language details by ID
         const fetchLanguage = async () => {
             try {
-
-                const response = await axios.get(`http://localhost:5000/admin/languages`, {
+                const response = await axios.get(`/api/admin/languages`, {
                     params: {
                         langName: langName,
                         user_id: localStorage.getItem('userId'),
                     },
                 });
                 const { name, description, cover_image } = response.data.language;
-                console.log(response.data);
-                console.log(response.data.language.name, description, cover_image);
 
                 setLanguageName(name);
                 setDescription(description);
@@ -45,23 +42,35 @@ const EditLanguage: React.FC = () => {
             setError('All fields are required');
             return;
         }
+
+        const confirmed = window.confirm('Are you sure you want to update this language?');
+        if (!confirmed) {
+            return;
+        }
+
         setLoading(true);
         try {
-            const response = await axios.put(`http://localhost:5000/admin/languages`, {
+            await axios.put(`/api/admin/languages`, {
                 name: languageName,
                 description: description,
                 cover_image: coverImage,
                 user_id: localStorage.getItem('userId'),
             });
-            console.log(response.data);
             setSuccess('Language updated successfully');
-
-            setTimeout(() => navigate('/admin/languages'), 2000); // Navigate after success
+            alert('Language updated successfully. Do you want to go back to the language list?');
+            navigate('/admin/languages');
         } catch (err) {
             setError('Failed to update language');
             console.error(err);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleBack = () => {
+        const confirmed = window.confirm('Are you sure you want to go back? Unsaved changes will be lost.');
+        if (confirmed) {
+            navigate('/admin/languages');
         }
     };
 
@@ -79,8 +88,8 @@ const EditLanguage: React.FC = () => {
                         onChange={(e) => setLanguageName(e.target.value)}
                         variant="outlined"
                         fullWidth
-                        disabled // This ensures the field is non-editable
-                        InputLabelProps={{ style: { color: 'white' } }} // Label styling
+                        disabled
+                        InputLabelProps={{ style: { color: 'white' } }}
                         InputProps={{
                             style: { color: 'white', backgroundColor: 'black' },
                         }}
@@ -96,7 +105,6 @@ const EditLanguage: React.FC = () => {
                             },
                         }}
                     />
-
 
                     {/* Description Input */}
                     <TextField
@@ -137,8 +145,25 @@ const EditLanguage: React.FC = () => {
                     />
 
                     {/* Submit Button */}
-                    <Button variant="contained" color="success" fullWidth type="submit" disabled={loading}>
+                    <Button
+                        variant="contained"
+                        style={{ backgroundColor: 'orangered', color: 'white' }}
+                        fullWidth
+                        type="submit"
+                        disabled={loading}
+                    >
                         {loading ? 'Updating...' : 'Update Language'}
+                    </Button>
+
+                    {/* Back Button */}
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        fullWidth
+                        onClick={handleBack}
+                        disabled={loading}
+                    >
+                        Back to Languages
                     </Button>
                 </form>
             </div>

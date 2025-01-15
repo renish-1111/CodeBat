@@ -20,7 +20,7 @@ const Blog = () => {
 
     const getBlogs = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/api/blogs`);
+            const response = await axios.get(`/api/blogs`);
             setBlogs(response.data.blogs);
             setLoading(false);
         } catch (error) {

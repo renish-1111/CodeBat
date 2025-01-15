@@ -18,7 +18,7 @@ const DeleteTutorial: React.FC = () => {
     const fetchTutorial = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:5000/admin/tutorial`, {
+        const response = await axios.get(`/api/admin/tutorial`, {
           params: {
             tutorialId,
             user_id: localStorage.getItem('userId'),
@@ -46,7 +46,7 @@ const DeleteTutorial: React.FC = () => {
     }
     setLoading(true);
     try {
-      const response = await axios.delete(`http://localhost:5000/admin/tutorial`, {
+      const response = await axios.delete(`/api/admin/tutorial`, {
         data: {
           tutorialId,
           user_id: localStorage.getItem('userId'),
@@ -93,7 +93,7 @@ const DeleteTutorial: React.FC = () => {
             }}
           />
           <TextField
-            label="Description"
+            label="Content"
             value={content}
             disabled
             variant="outlined"

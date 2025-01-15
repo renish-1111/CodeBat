@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 interface SidebarProps {
     sideOption: {
         title: string;
-        index: string;
+        index: number;
         language: string;
     }[];
 }
@@ -17,8 +17,12 @@ const Sidebar = ({ sideOption = [] }: SidebarProps) => {
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
-    console.log(sideOption);
-    
+
+    // Sort sideOption by index
+    const sortedOptions = [...sideOption].sort((a, b) => a.index - b.index);
+
+    console.log(sortedOptions);
+
     return (
         <Box sx={{ display: 'flex' }}>
             <Button
@@ -49,8 +53,8 @@ const Sidebar = ({ sideOption = [] }: SidebarProps) => {
             >
                 <Toolbar />
                 <Box sx={{ overflow: 'auto' }}>
-                    {sideOption.length > 0 ? (
-                        sideOption.map((option) => (
+                    {sortedOptions.length > 0 ? (
+                        sortedOptions.map((option) => (
                             <Link
                                 key={option.index}
                                 to={`/tutorial/${option.language}/${option.index}`}

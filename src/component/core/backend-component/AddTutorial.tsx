@@ -18,10 +18,16 @@ const AddTutorial: React.FC = () => {
       setError('All fields are required');
       return;
     }
+
+    const confirmed = window.confirm('Are you sure you want to add this tutorial?');
+    if (!confirmed) {
+        return;
+    }
+
     setLoading(true);
     const userId = localStorage.getItem('userId');
     try {
-      const response = await axios.post('http://localhost:5000/admin/tutorial', {
+      const response = await axios.post('/api/admin/tutorial', {
         title: title,
         content:content,
         language:language,
@@ -38,6 +44,13 @@ const AddTutorial: React.FC = () => {
       setLoading(false);
     }
   };
+
+  const handleBack = () => {
+    const confirmed = window.confirm('Are you sure you want to go back? Unsaved changes will be lost.');
+    if (confirmed) {
+        navigate('/admin/tutorials');
+    }
+};
 
   return (
     <div className="h-screen w-full flex justify-center items-center">
@@ -66,7 +79,7 @@ const AddTutorial: React.FC = () => {
 
           {/* Description Input */}
           <TextField
-            label="Description"
+            label="Content"
             value={content}
             onChange={(e) => setContent(e.target.value)}
             variant="outlined"
@@ -102,10 +115,28 @@ const AddTutorial: React.FC = () => {
             }}
           />
 
-          {/* Submit Button */}
-          <Button variant="contained" color="success" fullWidth type="submit" disabled={loading}>
-            {loading ? 'Adding...' : 'Add Tutorial'}
-          </Button>
+           {/* Submit Button */}
+           <Button
+                        variant="contained"
+                        style={{ backgroundColor: '', color: 'white' }}
+                        color="primary"
+                        fullWidth
+                        type="submit"
+                        disabled={loading}
+                    >
+                        {loading ? 'Adding...' : 'Add Tutorial'}
+                    </Button>
+
+                    {/* Back Button */}
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        fullWidth
+                        onClick={handleBack}
+                        disabled={loading}
+                    >
+                        Back to Tutorials
+                    </Button>
         </form>
       </div>
     </div>

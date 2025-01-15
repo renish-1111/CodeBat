@@ -16,7 +16,7 @@ const BlogUpdate: React.FC = () => {
     useEffect(() => {
         const userId = localStorage.getItem('userId');
         axios
-            .get(`http://localhost:5000/admin/blogs/${blogId}?user_id=${userId}`)
+            .get(`/api/admin/blogs/${blogId}?user_id=${userId}`)
             .then((response) => {
                 if (response.data) {
                     setTitle(response.data.title || '');
@@ -38,7 +38,7 @@ const BlogUpdate: React.FC = () => {
         try {
             const user_id = localStorage.getItem('userId');
             const response = await axios.put(
-                `http://localhost:5000/admin/blogs/${blogId}/?user_id=${user_id}`,
+                `/api/admin/blogs/${blogId}/?user_id=${user_id}`,
                 {
                     title,
                     content,

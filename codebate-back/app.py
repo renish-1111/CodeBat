@@ -31,7 +31,7 @@ def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
 # Signup route
-@app.route('/admin/signup', methods=['POST'])
+@app.route('/api/admin/signup', methods=['POST'])
 def signup():
     data = request.get_json()
     name, email, password = data.get('name'), data.get('email'), data.get('password')
@@ -46,7 +46,7 @@ def signup():
     return jsonify({'message': 'User created successfully'}), 201
 
 # Login route
-@app.route('/admin/login', methods=['POST'])
+@app.route('/api/admin/login', methods=['POST'])
 def login():
     data = request.get_json()
     email, password = data.get('email'), data.get('password')
@@ -61,7 +61,7 @@ def login():
     return jsonify({'message': 'Invalid email or password'}), 401
 
 # Create blog route
-@app.route('/admin/blogs/', methods=['GET','POST'])
+@app.route('/api/admin/blogs/', methods=['GET','POST'])
 def create_and_showAll_blog_route():
     if request.method == 'GET':
          user_id = request.args.get('user_id')
@@ -113,7 +113,7 @@ def get_blog_from_id_for_frontend(blog_id):
     return jsonify({'blog': {'title': blog.title, 'content': blog.content, 'description' : blog.description ,'cover_image' : blog.cover_image}}), 200
 
 # Manage a single blog
-@app.route('/admin/blogs/<int:blog_id>/', methods=['GET', 'PUT', 'DELETE', 'OPTIONS'])
+@app.route('/api/admin/blogs/<int:blog_id>/', methods=['GET', 'PUT', 'DELETE', 'OPTIONS'])
 def manage_blog(blog_id):
     user_id = request.args.get('user_id')
 
@@ -150,7 +150,7 @@ def manage_blog(blog_id):
         delete_blog(blog_id, user_id)
         return jsonify({'message': 'Blog deleted successfully'}), 200
     
-@app.route('/admin/languages/', methods=['GET'])
+@app.route('/api/admin/languages/', methods=['GET'])
 def show_language():        
     if request.method == 'GET':
         user_id = request.args.get('user_id')
@@ -171,7 +171,7 @@ def show_language():
         except Exception as e:
             return jsonify({'message': 'Failed to fetch languages', 'error': str(e)}), 500
 
-@app.route('/admin/languages', methods=['POST','PUT','DELETE'])
+@app.route('/api/admin/languages', methods=['POST','PUT','DELETE'])
 def manage_language():
     if request.method == 'POST':
         data = request.get_json()
@@ -212,7 +212,7 @@ def manage_language():
        
 @app.route('/api/languages', methods=['GET'])
 def get_languages_frontend():
-    language = request.args.get('language[name]')
+    language = request.args.get('language')
     if language:
         language_detail = Language.query.filter_by(name=language).first()
         if language_detail:
@@ -232,7 +232,7 @@ def get_languages_frontend():
 
 
         
-@app.route('/admin/tutorial/', methods=['GET'])
+@app.route('/api/admin/tutorial/', methods=['GET'])
 def get_tutorials():
     if request.method == 'GET':
         user_id = request.args.get('user_id')
@@ -252,7 +252,7 @@ def get_tutorials():
             return jsonify({'message': 'No tutorials found'}), 500
         return jsonify({'tutorials': [{'id': tutorial.id, 'title': tutorial.title,'language': tutorial.language_name,'index':tutorial.index} for tutorial in tutorials]}), 200
     
-@app.route('/admin/tutorial',methods=['POST','PUT','DELETE','OPTIONS'])
+@app.route('/api/admin/tutorial',methods=['POST','PUT','DELETE','OPTIONS'])
 def manage_tutorial():
     if request.method == 'OPTIONS':
         response = make_response()
@@ -299,15 +299,20 @@ def manage_tutorial():
 
 @app.route('/api/tutorials/', methods=['GET'])
 def get_tutorials_frontend():
-    language = request.args.get('language[name]')
+    language = request.args.get('language')
+    index = request.args.get('index')
+    
+    if language and index:
+        tutorial = Tutorial.query.filter_by(language_name=language, index=index).first()
+        max_index = db.session.query(db.func.max(Tutorial.index)).filter_by(language_name=language).scalar()
+        if not tutorial:
+            return jsonify({'message': 'Tutorial not found'}), 500
+        return jsonify({'tutorial': {'id': tutorial.id, 'title': tutorial.title, 'content': tutorial.content, 'language': tutorial.language_name, 'index':tutorial.index,'max_index':max_index}}), 200
+    
     tutorials = Tutorial.query.filter_by(language_name = language).all()
     if not tutorials:
         return jsonify({'message': 'No tutorials found'}), 500
     return jsonify({'tutorials': [{'id': tutorial.id, 'title': tutorial.title, 'content': tutorial.content, 'language': tutorial.language_name, 'index':tutorial.index} for tutorial in tutorials]}), 200
 
-
-
-
-    
 if __name__ == '__main__':
     app.run(debug=True)

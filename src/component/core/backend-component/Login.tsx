@@ -9,7 +9,7 @@ const Login = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    axios.post('http://localhost:5000/admin/login', { email, password })
+    axios.post('/api/admin/login', { email, password })
       .then((response: any) => {
         if (response.data.message === 'Login successful') {
           // Store user ID in local storage

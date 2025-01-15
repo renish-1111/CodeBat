@@ -175,3 +175,6 @@ def delete_tutorial(id, user_id, language):
         Tutorial.index: Tutorial.index - 1
     })
     db.session.commit()
+    
+def maxIndex(language):
+    return db.session.query(db.func.max(Tutorial.index)).filter_by(language_name=language).scalar()

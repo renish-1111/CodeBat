@@ -10,7 +10,7 @@ const Signup = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    axios.post('http://localhost:5000/admin/signup', {
+    axios.post('/api/admin/signup', {
         name,
         email,
         password,

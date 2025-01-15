@@ -43,7 +43,7 @@ const fetchLanguages = async () => {
 
   setLoadingAction(true);
   try {
-    const response = await axios.get('http://localhost:5000/admin/languages/?user_id=' + user_id);
+    const response = await axios.get('/api/admin/languages/?user_id=' + user_id);
     setLanguages(response.data.languages);
   } catch (err) {
     console.error('Error fetching languages:', err);

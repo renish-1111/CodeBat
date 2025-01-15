@@ -23,6 +23,7 @@ import DeleteTutorial from './component/core/backend-component/DeleteTutorial';
 import EditTutorial  from './component/core/backend-component/EditTutorial';
 import C from './tutorial/C';
 import GetStart from './component/core/GetStart';
+import TutorialContent from './component/TutorialContent';
 
 // Lazy loading components
 const Home = lazy(() => import('./component/Home'));
@@ -144,9 +145,9 @@ function App() {
 
           <Route path="/tutorial" element={<Tutorial />} />
           <Route path="/tutorial/:name" element={<GetStart />} />
+          <Route path="/tutorial/:name/:index" element={<TutorialContent />} />
           <Route path="/tutorial/c/introduction" element={<Introduction />} />
           <Route path="/tutorial/c/setup" element={<Setup />} />
-          <Route path="/tutorial/java" element={<Java />} />
         </Routes>
       </Suspense>
       <Footer />
