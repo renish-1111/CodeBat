@@ -1,12 +1,10 @@
 import os
-import uuid
 import hashlib
 from flask import Flask, request, jsonify, make_response
-from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 from flask_cors import CORS
 from flask_migrate import Migrate
-from models import Language, Tutorial, create_language, create_tutorial, delete_tutorial, get_language_by_name_and_user, get_languages, update_language ,delete_language ,db, init_app, get_user_by_email, create_user, get_blog_by_id_and_user, create_blog, update_blog, delete_blog, Blog, update_tutorial
+from models import db, Language, Tutorial, create_language, create_tutorial, delete_tutorial, get_language_by_name_and_user, get_languages, update_language ,delete_language , init_app, get_user_by_email, create_user, get_blog_by_id_and_user, create_blog, update_blog, delete_blog, Blog, update_tutorial
 
 # Load environment variables
 load_dotenv()
