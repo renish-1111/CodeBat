@@ -68,7 +68,7 @@ const BlogContent: React.FC = () => {
   }
 
   return (
-    <div className="text-white ">
+    <div className="text-white md:p-5">
       <Navbar />
       <div className="mx -auto container my-20 grid grid-cols-1 lg:grid-cols-3 gap-8 ">
         {/* Blog Content */}

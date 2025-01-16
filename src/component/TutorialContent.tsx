@@ -5,6 +5,7 @@ import Navbar from './core/Navbar';
 import Sidebar from './core/Sidebar';
 import { Button } from '@mui/material';
 import ContentRenderer from './core/ContentRenderer';
+import TutorialSkeleton from './core/Skeleton/TutorialSkeleton'; // Import the skeleton component
 
 interface Tutorial {
   title: string;
@@ -20,12 +21,14 @@ const TutorialContent: React.FC = () => {
   const [maxIndex, setMaxIndex] = useState<number>(0);
   const [currentIndex, setCurrentIndex] = useState<number>(1);
   const [error, setError] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(true); // Loading state
 
   const { name, index } = useParams<{ name: string; index: string }>();
   const language = name;
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true); // Start loading
       try {
         const [tutorialsRes, contentRes] = await Promise.all([
           axios.get('/api/tutorials', { params: { language } }),
@@ -40,11 +43,17 @@ const TutorialContent: React.FC = () => {
       } catch (err) {
         console.error('Error fetching tutorials:', err);
         setError('Failed to fetch tutorial data.');
+      } finally {
+        setLoading(false); // Stop loading
       }
     };
 
     fetchData();
   }, [language, index]);
+
+  if (loading) {
+    return <TutorialSkeleton />; // Show skeleton during loading
+  }
 
   if (error) {
     return <div className="text-red-500">{error}</div>;
@@ -98,54 +107,12 @@ const TutorialContent: React.FC = () => {
 
         {/* Tutorial Content */}
         <main className="m-5 text-white">
-          {/* Title with improved styling */}
+          {/* Title */}
           <h1 className="text-3xl md:text-4xl font-bold text-center mb-10 md:mb-20 leading-tight">
             {title}
           </h1>
           <ContentRenderer content={content} />
         </main>
-
-        {/* Navigation Buttons */}
-        <div className="flex justify-between m-5">
-          {/* Preview Button */}
-          {currentIndex > 1 && (
-            <Link to={`/tutorial/${language}/${currentIndex - 1}`}>
-              <Button
-                variant="contained"
-                color="secondary"
-                sx={{
-                  bgcolor: '#121212',
-                  ':hover': { bgcolor: 'white', color: 'black' },
-                  width: '100%',
-                  maxWidth: '200px',
-                }}
-              >
-                Preview
-              </Button>
-            </Link>
-          )}
-
-          {/* Spacer to align buttons properly */}
-          <div className="flex-grow"></div>
-
-          {/* Next Button */}
-          {currentIndex < maxIndex && (
-            <Link to={`/tutorial/${language}/${currentIndex + 1}`}>
-              <Button
-                variant="contained"
-                color="primary"
-                sx={{
-                  bgcolor: '#121212',
-                  ':hover': { bgcolor: 'white', color: 'black' },
-                  width: '100%',
-                  maxWidth: '200px',
-                }}
-              >
-                Next
-              </Button>
-            </Link>
-          )}
-        </div>
       </div>
     </>
   );

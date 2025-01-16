@@ -12,18 +12,7 @@ import ProtectedRoute from './ProtectedRoute';
 import BlogUpdate from './component/core/backend-component/BlogUpdate';
 import BlogDelete from './component/core/backend-component/BlogDelete';
 import BlogCreate from './component/core/backend-component/BlogCreate';
-import BlogContent from './component/BlogContent';
-import  Language from './component/core/backend-component/Language';
-import AddLanguage from './component/core/backend-component/AddLanguage';
-import EditLanguage from './component/core/backend-component/EditLanguage';
-import DeleteLanguage from './component/core/backend-component/DeleteLanguage';
-import  TutorialPanel from './component/core/backend-component/Tutorial';
-import AddTutorial from './component/core/backend-component/AddTutorial';
-import DeleteTutorial from './component/core/backend-component/DeleteTutorial';
-import EditTutorial  from './component/core/backend-component/EditTutorial';
-import C from './tutorial/C';
-import GetStart from './component/core/GetStart';
-import TutorialContent from './component/TutorialContent';
+
 
 // Lazy loading components
 const Home = lazy(() => import('./component/Home'));
@@ -31,10 +20,20 @@ const Login = lazy(() => import('./component/core/backend-component/Login'));
 const Signup = lazy(() => import('./component/core/backend-component/Signup'));
 const Admin = lazy(() => import('./component/core/backend-component/Admin'));
 const Tutorial = lazy(() => import('./component/Tutorial'));
-const Java = lazy(() => import('./tutorial/Java'));
 const About = lazy(() => import('./component/About'));
 const Blog = lazy(() => import('./component/Blog'));
 const NodeJs = lazy(() => import('./Blog/NodeJs'));
+const BlogContent = lazy(() => import('./component/BlogContent'));
+const Language = lazy(() => import('./component/core/backend-component/Language'));
+const AddLanguage = lazy(() => import('./component/core/backend-component/AddLanguage'));
+const EditLanguage = lazy(() => import('./component/core/backend-component/EditLanguage'));
+const DeleteLanguage = lazy(() => import('./component/core/backend-component/DeleteLanguage'));
+const TutorialPanel = lazy(() => import('./component/core/backend-component/Tutorial'));
+const AddTutorial = lazy(() => import('./component/core/backend-component/AddTutorial'));
+const DeleteTutorial = lazy(() => import('./component/core/backend-component/DeleteTutorial'));
+const EditTutorial = lazy(() => import('./component/core/backend-component/EditTutorial'));
+const GetStart = lazy(() => import('./component/core/GetStart'));
+const TutorialContent = lazy(() => import('./component/TutorialContent'));
 
 
 function ScrollToTop() {
