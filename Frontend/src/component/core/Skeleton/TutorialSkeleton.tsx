@@ -49,7 +49,7 @@ const TutorialSkeleton: React.FC = () => {
         variant="text"
         animation="wave"
         height={50}
-        width={isMobile ? '70%' : '50%'}
+        width={isMobile ? '80%' : '50%'}
         sx={{ marginY: 4, bgcolor: '#e0e0e0' }}
       />
       <Box>
@@ -57,42 +57,42 @@ const TutorialSkeleton: React.FC = () => {
         variant="text"
         animation="wave"
         height={40}
-        width={isMobile ? '70%' : '100%'}
+        width={isMobile ? '100%' : '100%'}
         sx={{ marginBottom: -1, bgcolor: '#e0e0e0' }}
       />
       <Skeleton
         variant="text"
         animation="wave"
         height={40}
-        width={isMobile ? '70%' : '100%'}
+        width={isMobile ? '100%' : '100%'}
         sx={{ marginBottom: -1, bgcolor: '#e0e0e0' }}
       />
       <Skeleton
         variant="text"
         animation="wave"
         height={40}
-        width={isMobile ? '70%' : '100%'}
+        width={isMobile ? '100%' : '100%'}
         sx={{ marginBottom: -1, bgcolor: '#e0e0e0' }}
       />
       <Skeleton
         variant="text"
         animation="wave"
         height={40}
-        width={isMobile ? '70%' : '100%'}
+        width={isMobile ? '100%' : '100%'}
         sx={{ marginBottom: -1, bgcolor: '#e0e0e0' }}
       />
       <Skeleton
         variant="text"
         animation="wave"
         height={40}
-        width={isMobile ? '70%' : '100%'}
+        width={isMobile ? '100%' : '100%'}
         sx={{marginBottom: -1,  bgcolor: '#e0e0e0' }}
       />
       <Skeleton
         variant="text"
         animation="wave"
         height={40}
-        width={isMobile ? '70%' : '100%'}
+        width={isMobile ? '100%' : '100%'}
         sx={{ marginBottom: 5, bgcolor: '#e0e0e0' }}
       />
       </Box>

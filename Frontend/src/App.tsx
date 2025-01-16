@@ -4,8 +4,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './component/core/Navbar';
 import Footer from './component/core/Footer';
 import CircularProgress from '@mui/material/CircularProgress';
-import Introduction from './tutorial/C/Introduction';
-import Setup from './tutorial/C/Setup';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
@@ -22,7 +20,6 @@ const Admin = lazy(() => import('./component/core/backend-component/Admin'));
 const Tutorial = lazy(() => import('./component/Tutorial'));
 const About = lazy(() => import('./component/About'));
 const Blog = lazy(() => import('./component/Blog'));
-const NodeJs = lazy(() => import('./Blog/NodeJs'));
 const BlogContent = lazy(() => import('./component/BlogContent'));
 const Language = lazy(() => import('./component/core/backend-component/Language'));
 const AddLanguage = lazy(() => import('./component/core/backend-component/AddLanguage'));
@@ -138,15 +135,12 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:blog_id" element={<BlogContent />} />
-          <Route path="/blogs/:blog_id" element={<NodeJs />} />
 
 
 
           <Route path="/tutorial" element={<Tutorial />} />
           <Route path="/tutorial/:name" element={<GetStart />} />
           <Route path="/tutorial/:name/:index" element={<TutorialContent />} />
-          <Route path="/tutorial/c/introduction" element={<Introduction />} />
-          <Route path="/tutorial/c/setup" element={<Setup />} />
         </Routes>
       </Suspense>
       <Footer />

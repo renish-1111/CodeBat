@@ -113,6 +113,47 @@ const TutorialContent: React.FC = () => {
           </h1>
           <ContentRenderer content={content} />
         </main>
+
+        <div className="flex justify-between m-5 pt-3">
+          {/* Preview Button */}
+          {currentIndex > 1 && (
+            <Link to={`/tutorial/${language}/${currentIndex - 1}`}>
+              <Button
+                variant="contained"
+                color="secondary"
+                sx={{
+                  bgcolor: '#121212',
+                  ':hover': { bgcolor: 'white', color: 'black' },
+                  width: '100%',
+                  maxWidth: '200px',
+                }}
+              >
+                Preview
+              </Button>
+            </Link>
+          )}
+
+          {/* Spacer to align buttons properly */}
+          <div className="flex-grow"></div>
+
+          {/* Next Button */}
+          {currentIndex < maxIndex && (
+            <Link to={`/tutorial/${language}/${currentIndex + 1}`}>
+              <Button
+                variant="contained"
+                color="primary"
+                sx={{
+                  bgcolor: '#121212',
+                  ':hover': { bgcolor: 'white', color: 'black' },
+                  width: '100%',
+                  maxWidth: '200px',
+                }}
+              >
+                Next
+              </Button>
+            </Link>
+          )}
+        </div>
       </div>
     </>
   );

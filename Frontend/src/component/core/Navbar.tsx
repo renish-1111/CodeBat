@@ -36,7 +36,7 @@ function Navbar(props: NavbarProps) {
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <img className='h-1' src="" alt="" />
-            <Link to={'/'}>
+            <Link to={'/admin'}>
               <Typography
                 variant="h6"
                 noWrap
