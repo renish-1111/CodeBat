@@ -39,6 +39,15 @@ const AddLanguage: React.FC = () => {
     }
   };
 
+  const handleBackClick = () => {
+    const confirmBack = window.confirm(
+      'Are you sure you want to go back? Unsaved changes will be lost.'
+    );
+    if (confirmBack) {
+      navigate('/admin/languages');
+    }
+  };
+
   return (
     <div className="h-screen w-full flex justify-center items-center">
       <div className="w-full max-w-2xl p-8 rounded-lg shadow-md">
@@ -107,13 +116,8 @@ const AddLanguage: React.FC = () => {
             {loading ? 'Adding...' : 'Add Language'}
           </Button>
 
-          {/* Back Button */}
-          <Button
-            variant="outlined"
-            color="secondary"
-            fullWidth
-            onClick={() => navigate('/admin/languages')}
-          >
+          {/* Back Button with Alert */}
+          <Button variant="outlined" color="secondary" fullWidth onClick={handleBackClick}>
             Back
           </Button>
         </form>

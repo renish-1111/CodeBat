@@ -8,8 +8,8 @@ const BlogDelete: React.FC = () => {
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const [description, setDescription] = useState(''); // Added state for description
-    const [coverImage, setCoverImage] = useState("")
+    const [description, setDescription] = useState('');
+    const [coverImage, setCoverImage] = useState('');
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -18,10 +18,9 @@ const BlogDelete: React.FC = () => {
             .get(`/api/admin/blogs/${blogId}?user_id=${userId}`)
             .then((response) => {
                 if (response.data) {
-                    console.log(response.data);
                     setTitle(response.data.title || '');
                     setContent(response.data.content || '');
-                    setDescription(response.data.description || ''); // Fetch and set description
+                    setDescription(response.data.description || '');
                     setCoverImage(response.data.cover_image || '');
                 }
                 setLoading(false);
@@ -33,6 +32,13 @@ const BlogDelete: React.FC = () => {
     }, [blogId]);
 
     const handleDelete = async () => {
+        const confirmDelete = window.confirm(
+            'Are you sure you want to delete this blog post? This action cannot be undone.'
+        );
+        if (!confirmDelete) {
+            return; // Exit if user cancels
+        }
+
         const userId = localStorage.getItem('userId');
         try {
             const response = await axios.delete(
@@ -44,10 +50,14 @@ const BlogDelete: React.FC = () => {
                 }
             );
             console.log(response.data);
-            navigate('/admin');
+            navigate('/admin'); // Redirect to admin page after successful deletion
         } catch (error) {
             console.error('Error deleting blog:', error);
         }
+    };
+
+    const handleBackClick = () => {
+        navigate('/admin'); // Navigate back to admin page
     };
 
     if (loading) {
@@ -55,7 +65,7 @@ const BlogDelete: React.FC = () => {
     }
 
     return (
-        <div className="h-screen w-full flex justify-center items-center">
+        <div className="min-h-screen w-full flex justify-center items-center mt-10 md:mt-5">
             <div className="w-full max-w-2xl p-8 rounded-lg shadow-md">
                 <h2 className="text-6xl font-bold text-white mb-10 text-center">Delete Blog Post</h2>
                 <form className="space-y-6">
@@ -133,6 +143,7 @@ const BlogDelete: React.FC = () => {
                         }}
                     />
 
+                    {/* Cover Image */}
                     <TextField
                         label="Cover Image"
                         value={coverImage}
@@ -159,6 +170,17 @@ const BlogDelete: React.FC = () => {
                     {/* Delete Button */}
                     <Button variant="contained" color="error" fullWidth onClick={handleDelete}>
                         Delete Blog Post
+                    </Button>
+
+                    {/* Back Button */}
+                    <Button
+                        variant="outlined"
+                        color="secondary"
+                        fullWidth
+                        className="mt-4"
+                        onClick={handleBackClick}
+                    >
+                        Back
                     </Button>
                 </form>
             </div>

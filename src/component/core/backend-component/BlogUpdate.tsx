@@ -35,6 +35,13 @@ const BlogUpdate: React.FC = () => {
 
     const handleUpdate = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
+        // Confirmation alert before updating
+        const confirmUpdate = window.confirm('Are you sure you want to update this blog?');
+        if (!confirmUpdate) {
+            return; // Exit if the user cancels
+        }
+
         try {
             const user_id = localStorage.getItem('userId');
             const response = await axios.put(
@@ -47,10 +54,18 @@ const BlogUpdate: React.FC = () => {
                 }
             );
             console.log(response.data);
-            navigate('/admin');
+            navigate('/admin'); // Redirect after successful update
         } catch (error) {
             console.error(error);
             setError('Failed to update blog');
+        }
+    };
+
+    const handleBackClick = () => {
+        // Confirmation alert before going back
+        const confirmBack = window.confirm('Are you sure you want to go back? Unsaved changes will be lost.');
+        if (confirmBack) {
+            navigate('/admin');
         }
     };
 
@@ -59,7 +74,7 @@ const BlogUpdate: React.FC = () => {
     }
 
     return (
-        <div className="h-screen w-full flex justify-center items-center">
+        <div className="min-vh-100 w-full flex justify-center items-center mt-10 md:mt-20">
             <div className="w-full max-w-2xl p-8 rounded-lg shadow-md">
                 <h2 className="text-6xl font-bold text-white mb-10 text-center">Update Blog Post</h2>
                 {error && <p className="text-red-500 mb-4">{error}</p>}
@@ -141,6 +156,17 @@ const BlogUpdate: React.FC = () => {
                     {/* Update Button */}
                     <Button variant="contained" color="warning" fullWidth type="submit">
                         Update Blog Post
+                    </Button>
+
+                    {/* Back Button */}
+                    <Button
+                        className="mt-4"
+                        variant="outlined"
+                        color="secondary"
+                        fullWidth
+                        onClick={handleBackClick}
+                    >
+                        Back
                     </Button>
                 </form>
             </div>
